@@ -3,29 +3,42 @@
 // Test Modules
 import {expect} from            'chai';
 
-// Angie Modules
-import app from                 '../../../src/Angular';
+// Angie Injector Modules
 import {
     default as $Injector,
     $injectionBinder,
+    $$ProviderDomainError,
     $$ProviderNotFoundError
 } from                          '../../../src/services/$InjectorProvider';
 
-describe('$Injector', function() {
-    let get;
-    describe('$injector', function() {
-        beforeEach(function() {
-            get = $Injector.get;
-            app.constant('test', 'test');
-            app.constant('test1', 'test');
-            app.service('$scope', 'test');
+describe('$InjectorProvider', function() {
+    let set = $Injector.$specifyInjectorRoot;
+
+    afterEach(function() {
+        set();
+    });
+    describe('get', function() {
+        let get = $Injector.get;
+
+        it('test no dependencies to provide', function() {
+            set();
+            expect(get.bind(null, 'test')).to.throw($$ProviderDomainError);
         });
-        afterEach(function() {
-            app.constants = {};
-            app.services = {};
-            app.$registry = {};
-        });
-        describe('get', function() {
+        describe('registrar', function() {
+            beforeEach(function() {
+                set({
+                    constants: {
+                        test: 'test',
+                        test1: 'test',
+                        $scope: 'test'
+                    },
+                    $registry: {
+                        test: 'constants',
+                        test1: 'constants',
+                        $scope: 'constants'
+                    }
+                });
+            });
             it('test get returns nothing if no arguments', function() {
                 expect(get()).to.deep.eq([]);
             });
@@ -38,37 +51,81 @@ describe('$Injector', function() {
                 ).to.throw($$ProviderNotFoundError);
             });
             it('test all arguments found', function() {
-                app.constant('test3', 'test');
+                set({
+                    constants: {
+                        test: 'test',
+                        test1: 'test',
+                        test3: 'test'
+                    },
+                    $registry: {
+                        test: 'constants',
+                        test1: 'constants',
+                        test3: 'constants'
+                    }
+                });
                 expect(
                     get('test', 'test1', 'test3')
                 ).to.deep.eq([ 'test', 'test', 'test' ]);
             });
-            it('test scope resolves to $scope', function() {
-                expect(get('scope')).to.eq('test');
-            });
-            it(
-                'test a request for a single argument returns a single provision',
-                function() {
-                    expect(get('test')).to.deep.eq('test');
-                }
-            );
-            it(
-                'test a request for a an array returns two provisions',
-                function() {
-                    expect(get([ 'test', 'test1' ])).to.deep.eq([ 'test', 'test' ]);
-                }
-            );
         });
+        describe('test no registrar', function() {
+            beforeEach(function() {
+                set({
+                    test: 'test',
+                    test2: 'test'
+                });
+            });
+            it('test get returns nothing if no arguments', function() {
+                expect(get()).to.deep.eq([]);
+            });
+            it('test no registrar with single argument', function() {
+                expect(get('test')).to.eq('test');
+            });
+            it('test argument not found', function() {
+                expect(
+                    get.bind(null, 'test', 'test1', 'test2')
+                ).to.throw($$ProviderNotFoundError);
+            });
+            it('test no registrar with many arguments', function() {
+                expect(
+                    get('test', 'test2')
+                ).to.deep.eq([ 'test', 'test' ]);
+            });
+        });
+        it('test scope resolves to $scope', function() {
+            set({ $scope: 'test' });
+            expect(get('scope')).to.eq('test');
+        });
+    });
+    describe('$specifyInjectorRoot', function() {
+        it('test with a value', function() {
+            expect(set({ test: 'test' })).to.deep.eq({ test: 'test' });
+        });
+        it('test without a value', function() {
+            expect(set()).to.deep.eq({});
+        })
     });
     describe('$injectionBinder', function() {
         let args,
+            binder = $injectionBinder,
             fn = function() {
                 args = arguments;
             };
 
-        beforeEach(() => app.constant('test', 'test').constant('test1', 'test'));
+        beforeEach(function() {
+            set({
+                constants: {
+                    test: 'test',
+                    test1: 'test'
+                },
+                $registry: {
+                    test: 'constants',
+                    test1: 'constants'
+                }
+            });
+        });
         afterEach(function() {
-            app._tearDown('test')._tearDown('test1');
+            set();
             args = undefined;
         });
         describe('test anonymous function', function() {
@@ -77,17 +134,17 @@ describe('$Injector', function() {
                 test2 = function(test, test1) { test = test1 = test1; };
             test.bind = test1.bind = test2.bind = fn;
             it('test empty args produces no returns', function() {
-                $injectionBinder(test);
+                binder(test);
                 expect(args[0]).to.be.null;
                 expect(args[1]).to.be.undefined;
             });
             it('test arguments with single provider', function() {
-                $injectionBinder(test1);
+                binder(test1);
                 expect(args[0]).to.be.null;
                 expect(args[1]).to.eq('test');
             });
             it('test arguments with many providers', function() {
-                $injectionBinder(test2);
+                binder(test2);
                 expect(args[0]).to.be.null;
                 expect(args[1]).to.eq('test');
                 expect(args[2]).to.eq('test');
@@ -99,17 +156,17 @@ describe('$Injector', function() {
             function test2(test, test1) { test = test1 = test1; }
             test.bind = test1.bind = test2.bind = fn;
             it('test empty args produces no returns', function() {
-                $injectionBinder(test);
+                binder(test);
                 expect(args[0]).to.be.null;
                 expect(args[1]).to.be.undefined;
             });
             it('test arguments with single provider', function() {
-                $injectionBinder(test1);
+                binder(test1);
                 expect(args[0]).to.be.null;
                 expect(args[1]).to.eq('test');
             });
             it('test arguments with many providers', function() {
-                $injectionBinder(test2);
+                binder(test2);
                 expect(args[0]).to.be.null;
                 expect(args[1]).to.eq('test');
                 expect(args[2]).to.eq('test');
@@ -121,17 +178,17 @@ describe('$Injector', function() {
                 test2 = (test, test1) => test = test1 = test1;
             test.bind = test1.bind = test2.bind = fn;
             it('test empty args produces no returns', function() {
-                $injectionBinder(test);
+                binder(test);
                 expect(args[0]).to.be.null;
                 expect(args[1]).to.be.undefined;
             });
             it('test arguments with single provider', function() {
-                $injectionBinder(test1);
+                binder(test1);
                 expect(args[0]).to.be.null;
                 expect(args[1]).to.eq('test');
             });
             it('test arguments with many providers', function() {
-                $injectionBinder(test2);
+                binder(test2);
                 expect(args[0]).to.be.null;
                 expect(args[1]).to.eq('test');
                 expect(args[2]).to.eq('test');

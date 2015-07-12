@@ -9,7 +9,10 @@ import istanbul from            'gulp-istanbul';
 import {Instrumenter} from      'isparta';
 import mocha from               'gulp-mocha';
 import cobertura from           'istanbul-cobertura-badger';
-import $LogProvider from        'angie-log';
+import {bold, green, red} from  'chalk';
+
+const breen = (v) => bold(green(v)),
+      bread = (v) => bold(red(v));
 
 const src = 'src/**/*.js',
       testSrc = 'test/**/*.spec.js',
@@ -45,14 +48,14 @@ gulp.task('mocha', function(cb) {
         ).pipe(
             istanbul.hookRequire()
         ).on('finish', function() {
-            $LogProvider.info('Running Angie Mocha test suite');
+            breen('Running Angie Mocha test suite');
             gulp.src(
                 [ 'test/src/testUtil.spec.js', 'test/**/!(*testUtil).spec.js' ],
                 { read: false }
             ).pipe(mocha({
                 reporter: 'spec'
             }).on('error', function(e) {
-                $LogProvider.error(e);
+                bread(e);
                 resolve();
             }).on('end', function() {
                 resolve();
@@ -67,11 +70,11 @@ gulp.task('mocha', function(cb) {
             })
         );
     }).then(function() {
-        //return cobertura('coverage/cobertura-coverage.xml', 'svg', cb);
+        return cobertura('coverage/cobertura-coverage.xml', 'svg', cb);
     });
 });
 gulp.task('esdoc', function(cb) {
-    $LogProvider.info('Generating Angie documentation');
+    breen('Generating Angie documentation');
     exec('esdoc -c esdoc.json', cb);
 });
 gulp.task('watch', [ 'jscs', 'mocha' ], function() {
