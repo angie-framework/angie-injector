@@ -15,11 +15,26 @@ This is a very slim dependency injector for iojs/NodeJS ES6 projects. It will wo
 npm i -g angie-injector
 ```
 ```javascript
-import {default as Injector} from 'angie-injector';
+import {
+    default as Injector,
+    $injectionBinder as binder
+} from 'angie-injector';
 
 // Specify from which object dependencies are injected
-// Use raw injector
+// Use raw injector, `global.app` by default.
+Injector.$specifyInjectorRoot({
+    test: 'test',
+    test1: {}
+});
+
+// Fetch dependencies
+Injector.get('test'); // 'test'
+Injector.get('test', 'test1'); // [ 'test', {} ]
+
 // Bind arguments to a function using the injector service
+binder(function(test) {
+    return test === 'test'; // true
+});
 ```
 
 ### Angie
