@@ -1,6 +1,6 @@
 {
   "name": "angie-injector",
-  "version": "0.0.1",
+  "version": "0.9.0",
   "authors": "Joe Groseclose <@benderTheCrime>",
   "description": "Standalone dependency injector for ES6 Modules designed for the Angie MVC",
   "license": "MIT",
@@ -38,6 +38,7 @@
     "Injection"
   ],
   "devDependencies": {
+    "babel": "^5.6.14",
     "babel-eslint": "3.1.17",
     "chai": "2.3.0",
     "connect": "2.x.x",
@@ -54,5 +55,9 @@
     "mocha": "2.2.4",
     "simple-mock": "0.3.0",
     "yargs": "3.8.0"
+  },
+  "dependencies": {
+    "angie-log": "^0.9.1",
+    "chalk": "^1.1.0"
   }
 }
