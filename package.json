@@ -1,14 +1,13 @@
 {
   "name": "angie-injector",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "authors": "Joe Groseclose <@benderTheCrime>",
   "description": "Standalone dependency injector for ES6 Modules designed for the Angie MVC",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "src/services/$InjectorProvider.js",
   "private": false,
   "preferGlobal": true,
   "scripts": {
-    "start": "node src/index.js",
     "test": "gulp",
     "publish": "gulp"
   },
