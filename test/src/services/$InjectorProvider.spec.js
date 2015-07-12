@@ -103,7 +103,7 @@ describe('$InjectorProvider', function() {
         });
         it('test without a value', function() {
             expect(set()).to.deep.eq({});
-        })
+        });
     });
     describe('$injectionBinder', function() {
         let args,

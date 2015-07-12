@@ -61,7 +61,7 @@ class $InjectorProvider {
             try {
                 provider = registrar ?
                     $$injectorRoot[ registrar[ arg ] ][ arg ] :
-                    $$injectorRoot[ arg ]
+                    $$injectorRoot[ arg ];
                 if (provider) {
                     providers.push(provider);
                     return;
