@@ -37,8 +37,8 @@ class $InjectorProvider {
                 arguments[0] : Array.from(arguments);
 
         // Check to see if a registrar exists
-        if (typeof $$injectorRoot.$registry === 'object') {
-            registrar = $$injectorRoot.$registry;
+        if (typeof $$injectorRoot.$$registry === 'object') {
+            registrar = $$injectorRoot.$$registry;
         }
 
         // Check to see if there are any preceeding empty args
@@ -124,15 +124,29 @@ function $injectionBinder(fn) {
             fn.bind(null, providers) : fn.bind(null);
 }
 
+/**
+ * @desc Handles Errors for unfound injection resources based on RangeError
+ * @since 0.0.1
+ * @extends {RangeError}
+ * @access private
+ */
 class $$ProviderNotFoundError extends RangeError {
     constructor(name) {
-        super(bread(`Cannot find ${name} <-- ${name}Provider`));
+        console.log(bread(`Cannot find ${name} <-- ${name}Provider`));
+        super();
     }
 }
 
+/**
+ * @desc Handles Errors for empty $Injector requests based on ReferenceError
+ * @since 0.0.1
+ * @extends {ReferenceError}
+ * @access private
+ */
 class $$ProviderDomainError extends ReferenceError {
     constructor() {
-        super(bread('No dependencies to inject'));
+        console.log(bread('No dependencies to inject'));
+        super();
     }
 }
 

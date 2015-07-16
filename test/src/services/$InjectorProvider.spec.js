@@ -14,9 +14,7 @@ import {
 describe('$InjectorProvider', function() {
     let set = $Injector.$specifyInjectorRoot;
 
-    afterEach(function() {
-        set();
-    });
+    afterEach(() => { set(); });
     describe('get', function() {
         let get = $Injector.get;
 
@@ -32,7 +30,7 @@ describe('$InjectorProvider', function() {
                         test1: 'test',
                         $scope: 'test'
                     },
-                    $registry: {
+                    $$registry: {
                         test: 'constants',
                         test1: 'constants',
                         $scope: 'constants'
@@ -57,7 +55,7 @@ describe('$InjectorProvider', function() {
                         test1: 'test',
                         test3: 'test'
                     },
-                    $registry: {
+                    $$registry: {
                         test: 'constants',
                         test1: 'constants',
                         test3: 'constants'
@@ -118,7 +116,7 @@ describe('$InjectorProvider', function() {
                     test: 'test',
                     test1: 'test'
                 },
-                $registry: {
+                $$registry: {
                     test: 'constants',
                     test1: 'constants'
                 }
