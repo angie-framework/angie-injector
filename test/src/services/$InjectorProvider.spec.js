@@ -8,7 +8,8 @@ import {
     default as $Injector,
     $injectionBinder,
     $$ProviderDomainError,
-    $$ProviderNotFoundError
+    $$ProviderNotFoundError,
+    $$ProviderTypeError
 } from                          '../../../src/services/$InjectorProvider';
 
 describe('$InjectorProvider', function() {
@@ -33,7 +34,9 @@ describe('$InjectorProvider', function() {
                     $$registry: {
                         test: 'constants',
                         test1: 'constants',
-                        $scope: 'constants'
+                        $scope: 'constants',
+                        test4: 'Model',
+                        test5: 'directive'
                     }
                 });
             });
@@ -64,6 +67,11 @@ describe('$InjectorProvider', function() {
                 expect(
                     get('test', 'test1', 'test3')
                 ).to.deep.eq([ 'test', 'test', 'test' ]);
+            });
+            it('test directive requests Model injection', function() {
+                expect(
+                    get.bind(null, [ 'test4' ], 'directive')
+                ).to.throw($$ProviderTypeError)
             });
         });
         describe('test no registrar', function() {
