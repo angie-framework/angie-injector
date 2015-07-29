@@ -34,7 +34,9 @@ class $InjectorProvider {
         let registrar,
             providers = [],
             args = arguments[0] instanceof Array ?
-                arguments[0] : Array.from(arguments);
+                arguments[0] : Array.from(arguments),
+            type = arguments[0] instanceof Array && arguments[1] ?
+                arguments[1] : null;
 
         // Check to see if a registrar exists
         if (typeof $$injectorRoot.$$registry === 'object') {
@@ -54,6 +56,11 @@ class $InjectorProvider {
             // Rename convention for the $scope service
             if (arg === 'scope') {
                 arg = '$scope';
+            } else if (
+                registrar && registrar[ arg ] === 'Model' &&
+                type && type === 'directive'
+            ) {
+                throw new $$ProviderTypeError();
             }
 
             // Try to find the provider in the registrar or the declared object
@@ -99,7 +106,7 @@ class $InjectorProvider {
  * @param {function} The function to which values are being provided
  * @returns {function} Bound function
  */
-function $injectionBinder(fn) {
+function $injectionBinder(fn, type) {
     let str = fn.toString(),
         args = str.match(/(function.*)?\(.*\)(\s+\=\>)?/g),
         providers = [];
@@ -117,7 +124,7 @@ function $injectionBinder(fn) {
             /(\(|function(\s+)?([^\)\(]+)?(\s+)?\(|\)(\s+)?(=>)?(\s+)?)/g,
             ''
         ).split(',').map((v) => v.trim());
-        providers = $InjectorProvider.get.apply(global.app, args);
+        providers = $InjectorProvider.get.apply(global.app, args, type);
     }
     return typeof providers === 'object' ?
         fn.bind(null, ...providers) : providers ?
@@ -150,9 +157,26 @@ class $$ProviderDomainError extends ReferenceError {
     }
 }
 
+/**
+ * @desc Handles Errors for empty $Injector requests based on ReferenceError
+ * @since 0.0.1
+ * @extends {ReferenceError}
+ * @access private
+ */
+class $$ProviderTypeError extends TypeError {
+    constructor() {
+        console.log(bread(
+            'Models cannot be called as arguments to directives. You may ' +
+            'manually inject these using `$inject.get` if you so choose'
+        ));
+        super();
+    }
+}
+
 export default $InjectorProvider;
 export {
     $injectionBinder,
     $$ProviderDomainError,
-    $$ProviderNotFoundError
+    $$ProviderNotFoundError,
+    $$ProviderTypeError
 };
