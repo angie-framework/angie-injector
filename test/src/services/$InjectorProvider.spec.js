@@ -71,7 +71,7 @@ describe('$InjectorProvider', function() {
             it('test directive requests Model injection', function() {
                 expect(
                     get.bind(null, [ 'test4' ], 'directive')
-                ).to.throw($$ProviderTypeError)
+                ).to.throw($$ProviderTypeError);
             });
         });
         describe('test no registrar', function() {
