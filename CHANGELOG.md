@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.9.5] - 2015-07-30
+##### Fixed
+- Added a decorator for ease of use injections into instance methods
+
 #### [0.9.4] - 2015-07-28
 ##### Fixed
 - Fixed coverage report
