@@ -51,7 +51,9 @@ class $InjectorProvider {
         args.forEach(function(arg) {
             let provider;
 
-            arg = arg.trim();
+            // Doing this for safety reasons...if the arg didn't come from IB,
+            // it potentially has unsafe spaces, underscores
+            arg = arg.toString().replace(/[_\s]/g, '');
 
             // Rename convention for the $scope service
             if (arg === 'scope') {
@@ -106,12 +108,12 @@ class $InjectorProvider {
  * @param {function} The function to which values are being provided
  * @returns {function} Bound function
  */
-function $injectionBinder(fn, type) {
+function $injectionBinder(fn = () => undefined, type) {
     let str = fn.toString(),
         args = str.match(/(function.*)?\(.*\)(\s+\=\>)?/g),
         providers = [];
 
-    args.forEach((v) => v.replace(/\s/g, ''));
+    args = args.map((v) => v.replace(/[_\s]/g, ''));
     if (args && args.length) {
 
         // TODO this is probably one of the worst RegExps ever written. It is

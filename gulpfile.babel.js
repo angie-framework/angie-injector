@@ -14,7 +14,7 @@ import {bold, green, red} from  'chalk';
 const breen = (v) => bold(green(v)),
       bread = (v) => bold(red(v));
 
-const src = 'src/**/*.js',
+const src = 'src/services/**/*.js',
       testSrc = 'test/**/*.spec.js',
       docSrc = 'doc',
       coverageDir = 'coverage';
@@ -83,4 +83,5 @@ gulp.task('watch', [ 'jscs', 'mocha' ], function() {
 gulp.task('watch:mocha', [ 'jscs', 'mocha' ], function() {
     gulp.watch([ src, testSrc, '../gh-pages-angie/**' ], [ 'mocha' ]);
 });
-gulp.task('default', [ 'jscs', 'mocha' ]);
+gulp.task('test', [ 'jscs', 'mocha' ]);
+gulp.task('default', [ 'test' ]);
