@@ -19,6 +19,7 @@ import {
     default as Injector,
     $injectionBinder as binder
 } from 'angie-injector';
+import {injector} from 'angie-injector/src/util/decorators';
 
 // Specify from which object dependencies are injected
 // Use raw injector, `global.app` by default.
@@ -35,6 +36,17 @@ Injector.get('test', 'test1'); // [ 'test', {} ]
 binder(function(test) {
     return test === 'test'; // true
 });
+
+// Slim decorator for instance methods
+class Test {
+    constructor() {
+        this._test = this.test(); // Called with test
+    }
+    @injector
+    test(test) {
+        test === 'test'; // true
+    }
+}
 ```
 
 ### Angie
