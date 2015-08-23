@@ -1,8 +1,8 @@
 window.esdocSearchIndex = [
   [
-    "angie-injector~$injectorprovider",
+    "angie-injector/src/services/$injectorprovider.js~$injectorprovider",
     "class/src/services/$InjectorProvider.js~$InjectorProvider.html",
-    "<span>$InjectorProvider</span> <span class=\"search-result-import-path\">angie-injector</span>",
+    "<span>$InjectorProvider</span> <span class=\"search-result-import-path\">angie-injector/src/services/$InjectorProvider.js</span>",
     "class"
   ],
   [

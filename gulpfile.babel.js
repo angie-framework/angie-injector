@@ -9,7 +9,7 @@ import mocha from               'gulp-mocha';
 import cobertura from           'istanbul-cobertura-badger';
 import babel from               'gulp-babel';
 
-const SRC = 'src/services/**/*.js',
+const SRC = 'src/**/*.js',
     TRANSPILED_SRC = 'dist',
     TEST_SRC = 'test/**/*.spec.js',
     DOC_SRC = 'doc',
