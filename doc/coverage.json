@@ -1,0 +1,11 @@
+{
+  "coverage": "50%",
+  "expectCount": 6,
+  "actualCount": 3,
+  "files": {
+    "src/services/$InjectorProvider.js": {
+      "expectCount": 6,
+      "actualCount": 3
+    }
+  }
+}
