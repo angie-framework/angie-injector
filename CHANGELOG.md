@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.9.6] - 2015-08-23
+##### Removed/Added
+- Removed documentation from `.gitignore`
+- Removed unnecessary `use strict;` lines from many files.
+- Created a `dist` folder/runtime with an equivalent pre-compiled Angie Log framework.
+
 #### [0.9.5] - 2015-07-30
 ##### Fixed
 - Added a decorator for ease of use injections into instance methods

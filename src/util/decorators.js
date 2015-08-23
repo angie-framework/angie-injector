@@ -1,4 +1,8 @@
-'use strict'; 'use strong';
+/**
+ * @module decorators.js
+ * @author Joe Groseclose <@benderTheCrime>
+ * @date 8/23/2015
+ */
 
 import {$injectionBinder} from   '../services/$InjectorProvider';
 
