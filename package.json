@@ -1,6 +1,6 @@
 {
   "name": "angie-injector",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "authors": "Joe Groseclose <@benderTheCrime>",
   "description": "Standalone dependency injector for ES6 Modules designed for the Angie MVC",
   "license": "MIT",
@@ -17,7 +17,8 @@
     "node": "*"
   },
   "bin": {
-    "angie": "bin/angie-injector"
+    "angie-injector": "bin/angie-injector",
+    "angie-injector-dist": "bin/angie-injector-dist"
   },
   "repository": {
     "type": "git",
