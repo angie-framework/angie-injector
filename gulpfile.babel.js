@@ -1,5 +1,7 @@
 // System Modules
+import fs from                  'fs';
 import gulp from                'gulp';
+import {argv} from              'yargs';
 import {exec} from              'child_process';
 import eslint from              'gulp-eslint';
 import jscs from                'gulp-jscs';
@@ -73,10 +75,21 @@ gulp.task('babel', function() {
 gulp.task('esdoc', function(cb) {
     exec('esdoc -c esdoc.json', cb);
 });
-gulp.task('watch', [ 'jscs', 'mocha' ], function() {
-    gulp.watch([ SRC, TEST_SRC ], [ 'mocha' ]);
+gulp.task('bump', function(cb) {
+    const version = argv.version,
+        bump = (f) => fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace(
+            /[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}/,
+            version
+        ));
+    if (version) {
+        bump('bin/angie-injector');
+        bump('bin/angie-injector-dist');
+        bump('package.json');
+    } else {
+        throw new Error(bold(red('No version specified!!')));
+    }
 });
-gulp.task('watch:mocha', [ 'jscs', 'mocha' ], function() {
+gulp.task('watch', [ 'jscs', 'mocha' ], function() {
     gulp.watch([ SRC, TEST_SRC ], [ 'mocha' ]);
 });
 gulp.task('test', [ 'jscs', 'mocha' ]);

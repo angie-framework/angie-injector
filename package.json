@@ -1,6 +1,6 @@
 {
   "name": "angie-injector",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "authors": "Joe Groseclose <@benderTheCrime>",
   "description": "Standalone dependency injector for ES6 Modules designed for the Angie MVC",
   "license": "MIT",
@@ -9,7 +9,8 @@
   "preferGlobal": true,
   "scripts": {
     "test": "gulp test",
-    "publish": "gulp"
+    "prepublish": "gulp test",
+    "postinstall": "gulp babel"
   },
   "engines": {
     "iojs": "*",
@@ -53,7 +54,7 @@
     "istanbul-cobertura-badger": "0.0.4",
     "mocha": "2.2.4",
     "simple-mock": "0.3.0",
-    "yargs": "3.8.0"
+    "yargs": "^3.21.0"
   },
   "dependencies": {
     "angie-log": "^0.9.1",
