@@ -74,16 +74,26 @@ describe('$InjectorProvider', function() {
         });
         describe('test no registrar', function() {
             beforeEach(function() {
+
+                /* eslint-disable */
                 set({
                     test: 'test',
-                    test2: 'test'
+                    test2: 'test2',
+                    te_st: 'te_st'
                 });
+                /* eslint-enable */
             });
             it('test get returns nothing if no arguments', function() {
                 expect(get()).to.deep.eq([]);
             });
             it('test no registrar with single argument', function() {
                 expect(get('test')).to.eq('test');
+            });
+            it('test no registrar with single argument underscores', function() {
+                expect(get('_te_st_')).to.eq('te_st');
+            });
+            it('test no registrar with single argument underscores', function() {
+                expect(get(' te st ')).to.eq('test');
             });
             it('test argument not found', function() {
                 expect(
@@ -93,7 +103,7 @@ describe('$InjectorProvider', function() {
             it('test no registrar with many arguments', function() {
                 expect(
                     get('test', 'test2')
-                ).to.deep.eq([ 'test', 'test' ]);
+                ).to.deep.eq([ 'test', 'test2' ]);
             });
         });
         it('test scope resolves to $scope', function() {
@@ -120,7 +130,7 @@ describe('$InjectorProvider', function() {
             set({
                 constants: {
                     test: 'test',
-                    test1: 'test'
+                    test1: 'test1'
                 },
                 $$registry: {
                     test: 'constants',
@@ -151,7 +161,7 @@ describe('$InjectorProvider', function() {
                 binder(test2);
                 expect(args[0]).to.be.null;
                 expect(args[1]).to.eq('test');
-                expect(args[2]).to.eq('test');
+                expect(args[2]).to.eq('test1');
             });
         });
         describe('test named function', function() {
@@ -173,7 +183,7 @@ describe('$InjectorProvider', function() {
                 binder(test2);
                 expect(args[0]).to.be.null;
                 expect(args[1]).to.eq('test');
-                expect(args[2]).to.eq('test');
+                expect(args[2]).to.eq('test1');
             });
         });
         describe('test arrow function', function() {
@@ -195,7 +205,7 @@ describe('$InjectorProvider', function() {
                 binder(test2);
                 expect(args[0]).to.be.null;
                 expect(args[1]).to.eq('test');
-                expect(args[2]).to.eq('test');
+                expect(args[2]).to.eq('test1');
             });
         });
     });
