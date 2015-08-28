@@ -57,7 +57,7 @@ class $InjectorProvider {
 
             // Doing this for safety reasons...if the arg didn't come from IB,
             // it potentially has unsafe spaces, underscores
-            arg = arg.toString().replace(/[_\s]/g, '');
+            arg = arg.toString().replace(/(^(_)|[\s]|(_)$)/g, '');
 
             // Rename convention for the $scope service
             if (arg === 'scope') {
