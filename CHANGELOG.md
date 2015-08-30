@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.9.11] - 2015-08-30
+##### Fixed
+- Once more, with feeling: Fixed issues with the npm postinstall script not actually addressed by 0.9.10.
+
 #### [0.9.10] - 2015-08-29
 ##### Fixed
 - Fixed an issue preventing the proper postinstall script from executing on the package
