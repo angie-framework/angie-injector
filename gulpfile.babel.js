@@ -14,7 +14,7 @@ import babel from               'gulp-babel';
 const SRC_DIR = 'src',
     SRC = `${SRC}/**/*.js`,
     TRANSPILED_SRC = 'dist',
-    TEST_SRC = 'test/src/**/*.spec.js',
+    TEST_SRC = 'test/**/*.spec.js',
     DOC_SRC = 'doc',
     COVERAGE_SRC = 'coverage';
 
