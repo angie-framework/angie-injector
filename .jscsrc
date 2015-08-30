@@ -56,9 +56,6 @@
     "requireSpacesInsideObjectBrackets": "allButNested",
     "safeContextKeyword": ["me"],
     "validateIndentation": 4,
-    "validateJSDoc": {
-        "requireParamTypes": true
-    },
     "validateLineBreaks": "LF",
     "validateQuoteMarks": true
 }
