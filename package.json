@@ -1,6 +1,6 @@
 {
   "name": "angie-injector",
-  "version": "0.9.11",
+  "version": "0.9.12",
   "authors": "Joe Groseclose <@benderTheCrime>",
   "description": "Standalone dependency injector for ES6 Modules designed for the Angie MVC",
   "license": "MIT",
@@ -8,7 +8,9 @@
   "private": false,
   "preferGlobal": true,
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "prepublish": "gulp babel",
+    "postinstall": "gulp babel"
   },
   "engines": {
     "iojs": "*",
