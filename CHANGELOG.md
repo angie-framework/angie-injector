@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 #### [0.9.10] - 2015-08-29
 ##### Fixed
-- Fixed an issue preventing the install of the package
+- Fixed an issue preventing the proper postinstall script from executing on the package
 
 #### [0.9.9] - 2015-08-27
 ##### Fixed
