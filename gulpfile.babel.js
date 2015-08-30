@@ -10,7 +10,7 @@ import mocha from               'gulp-mocha';
 import cobertura from           'istanbul-cobertura-badger';
 import esdoc from               'gulp-esdoc';
 import babel from               'gulp-babel';
-import {bold, red} from             'chalk';
+import {bold, red} from         'chalk';
 
 const bread = (str) => bold(red(str));
 
