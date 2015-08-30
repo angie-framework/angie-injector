@@ -9,7 +9,8 @@
   "preferGlobal": true,
   "scripts": {
     "test": "gulp test",
-    "prepublish": "gulp babel"
+    "prepublish": "gulp babel",
+    "postinstall": "gulp babel"
   },
   "engines": {
     "iojs": "*",
