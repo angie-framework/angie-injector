@@ -182,7 +182,7 @@ class $$ProviderTypeError extends TypeError {
 export default $InjectorProvider;
 export {
     $injectionBinder,
-    $$ProviderDomainError,
     $$ProviderNotFoundError,
+    $$ProviderDomainError,
     $$ProviderTypeError
 };
