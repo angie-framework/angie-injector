@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.9.13] - 2015-08-30
+##### Fixed
+- Removed npm prepublish script
+- Modified npm postinstall script to use babel from the cli
+- Moved some npm dependencies to devDependencies
+
 #### [0.9.12] - 2015-08-30
 ##### Added
 - Re-added removed npm scripts.
