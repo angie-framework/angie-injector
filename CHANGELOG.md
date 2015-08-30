@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.9.10] - 2015-08-29
+##### Fixed
+- Fixed an issue preventing the install of the package
+
 #### [0.9.9] - 2015-08-27
 ##### Fixed
 - Fixed removal of trailing/leading underscores in provider names
