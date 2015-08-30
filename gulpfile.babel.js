@@ -83,7 +83,6 @@ gulp.task('bump', function(cb) {
             version
         ));
     if (version) {
-        const CHANGELOG = fs.readFileSync('CHANGELOG.md', 'utf8');
 
         // Verify that the version is in the CHANGELOG
         if (fs.readFileSync('CHANGELOG.md', 'utf8').indexOf(version) === -1) {
