@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.9.14] - 2015-09-07
+##### Changed
+- Change the structure and content of the $Injector invoked exceptions:
+* $$ProviderNotFoundError
+* $$ProviderDomainError
+* $$ProviderTypeError
+
 #### [0.9.13] - 2015-08-30
 ##### Fixed
 - Removed npm prepublish script
