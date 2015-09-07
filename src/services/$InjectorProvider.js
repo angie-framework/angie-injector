@@ -173,7 +173,7 @@ class $$ProviderTypeError extends TypeError {
     constructor() {
         console.log(bread(
             'Models cannot be called as arguments to directives. You may ' +
-            'manually inject these using `$inject.get` if you so choose'
+            'manually inject these using `$Injector.get` if you so choose'
         ));
         super();
     }
@@ -182,7 +182,7 @@ class $$ProviderTypeError extends TypeError {
 export default $InjectorProvider;
 export {
     $injectionBinder,
-    $$ProviderDomainError,
     $$ProviderNotFoundError,
+    $$ProviderDomainError,
     $$ProviderTypeError
 };

@@ -16,10 +16,7 @@ This is a very slim dependency injector for iojs/NodeJS ES6 projects. It will wo
 npm i -g angie-injector
 ```
 ```javascript
-import {
-    default as Injector,
-    $injectionBinder as binder
-} from 'angie-injector';
+import {default as Injector, $injectionBinder as binder} from 'angie-injector';
 import {injector} from 'angie-injector/src/util/decorators';
 
 // Specify from which object dependencies are injected
