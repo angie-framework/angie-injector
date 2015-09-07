@@ -138,44 +138,60 @@ function $injectionBinder(fn = () => undefined, type) {
 }
 
 /**
- * @desc Handles Errors for unfound injection resources based on RangeError
+ * @desc Handles Errors for unfound injection resources
  * @since 0.0.1
  * @extends {RangeError}
  * @access private
  */
 class $$ProviderNotFoundError extends RangeError {
-    constructor(name) {
-        console.log(bread(`Cannot find ${name} <-- ${name}Provider`));
-        super();
+
+    /**
+     * @desc Throws a RangeError based on an unfound module name
+     * @param {string} name Module name that was not found
+     * @since 0.0.1
+     * @access private
+     */
+    constructor(name = 'module') {
+        super(bread(`Cannot find ${name} in module registry`));
     }
 }
 
 /**
- * @desc Handles Errors for empty $Injector requests based on ReferenceError
+ * @desc Handles Errors for empty $Injector requests
  * @since 0.0.1
  * @extends {ReferenceError}
  * @access private
  */
 class $$ProviderDomainError extends ReferenceError {
+
+    /**
+     * @desc Throws a ReferenceError
+     * @since 0.0.1
+     * @access private
+     */
     constructor() {
-        console.log(bread('No dependencies to inject'));
-        super();
+        super(bread('No dependencies to inject'));
     }
 }
 
 /**
- * @desc Handles Errors for empty $Injector requests based on ReferenceError
+ * @desc Handles Errors for empty $Injector requests
  * @since 0.0.1
- * @extends {ReferenceError}
+ * @extends {TypeError}
  * @access private
  */
 class $$ProviderTypeError extends TypeError {
+
+    /**
+     * @desc Throws a TypeError
+     * @since 0.0.1
+     * @access private
+     */
     constructor() {
-        console.log(bread(
+        super(bread(
             'Models cannot be called as arguments to directives. You may ' +
             'manually inject these using `$Injector.get` if you so choose'
         ));
-        super();
     }
 }
 

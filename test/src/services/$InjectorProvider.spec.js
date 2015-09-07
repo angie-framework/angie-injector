@@ -1,5 +1,9 @@
 // Test Modules
 import {expect} from            'chai';
+import simple, {mock} from      'simple-mock';
+
+// System Modules
+import {bold, red} from         'chalk';
 
 // Angie Injector Modules
 import {
@@ -9,6 +13,8 @@ import {
     $$ProviderNotFoundError,
     $$ProviderTypeError
 } from                          '../../../src/services/$InjectorProvider';
+
+const bread = (v) => bold(red(v));
 
 describe('$InjectorProvider', function() {
     let set = $Injector.$specifyInjectorRoot;
@@ -207,6 +213,85 @@ describe('$InjectorProvider', function() {
                 expect(args[1]).to.eq('test');
                 expect(args[2]).to.eq('test1');
             });
+        });
+    });
+});
+
+describe('$$ProviderNotFoundError', function() {
+    beforeEach(function() {
+        mock(RangeError.prototype, 'constructor', () => true);
+    });
+    afterEach(simple.restore);
+    describe('constructor', function() {
+        it('test called with module', function() {
+
+            /* eslint-disable */
+            new $$ProviderNotFoundError('test');
+
+            /* eslint-enable */
+            expect(
+                RangeError.prototype.constructor.calls[0].args[0]
+            ).to.eq(
+                 bread('Cannot find test in module registry')
+            );
+        });
+        it('test called without module', function() {
+
+            /* eslint-disable */
+            new $$ProviderNotFoundError();
+
+            /* eslint-enable */
+            expect(
+                RangeError.prototype.constructor.calls[0].args[0]
+            ).to.eq(
+                 bread('Cannot find module in module registry')
+            );
+        });
+    });
+});
+
+describe('$$ProviderDomainError', function() {
+    beforeEach(function() {
+        mock(ReferenceError.prototype, 'constructor', () => true);
+    });
+    afterEach(simple.restore);
+    describe('constructor', function() {
+        it('test constructor', function() {
+
+            /* eslint-disable */
+            new $$ProviderDomainError();
+
+            /* eslint-enable */
+            expect(
+                ReferenceError.prototype.constructor.calls[0].args[0]
+            ).to.eq(
+                 bread('No dependencies to inject')
+            );
+        });
+    });
+});
+
+describe('$$ProviderTypeError', function() {
+    beforeEach(function() {
+        mock(TypeError.prototype, 'constructor', () => true);
+    });
+    afterEach(simple.restore);
+    describe('constructor', function() {
+        it('test constructor', function() {
+
+            /* eslint-disable */
+            new $$ProviderTypeError();
+
+            /* eslint-enable */
+            expect(
+                TypeError.prototype.constructor.calls[0].args[0]
+            ).to.eq(
+                 bread(
+                     'Models cannot be called as arguments to directives. You ' +
+                     'may manually inject these using `$Injector.get` if you so ' +
+                     'choose'
+                 )
+            );
         });
     });
 });

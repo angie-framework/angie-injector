@@ -1,8 +1,8 @@
 {
   "name": "angie-injector",
-  "version": "0.9.13",
+  "version": "0.9.14",
   "authors": "Joe Groseclose <@benderTheCrime>",
-  "description": "Standalone dependency injector for ES6 Modules designed for the Angie MVC",
+  "description": "Standalone Dependency Injector for ES6 Modules Designed for the Angie MVC",
   "license": "MIT",
   "main": "dist/services/$InjectorProvider.js",
   "private": false,
@@ -40,6 +40,7 @@
   "devDependencies": {
     "babel-eslint": "^3.1.17",
     "chai": "2.3.0",
+    "esdoc": "^0.2.5",
     "gulp": "3.9.0",
     "gulp-babel": "^5.2.1",
     "gulp-cli": "0.2.0",
