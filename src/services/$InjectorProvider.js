@@ -5,9 +5,8 @@
  */
 
 // System Modules
-import {bold, red} from   'chalk';
+import $LogProvider from    'angie-log';
 
-const bread = (v) => bold(red(v));
 let $$injectorRoot;
 
 /**
@@ -31,6 +30,7 @@ class $InjectorProvider {
 
         // Declare the root from which dependencies are provided and check keys
         $$injectorRoot = $$injectorRoot || global.app || {};
+
         if (!Object.keys($$injectorRoot).length) {
             throw new $$ProviderDomainError();
         }
@@ -152,7 +152,8 @@ class $$ProviderNotFoundError extends RangeError {
      * @access private
      */
     constructor(name = 'module') {
-        super(bread(`Cannot find ${name} in module registry`));
+        $LogProvider.error(`Cannot find ${name} in module registry`);
+        super();
     }
 }
 
@@ -170,7 +171,8 @@ class $$ProviderDomainError extends ReferenceError {
      * @access private
      */
     constructor() {
-        super(bread('No dependencies to inject'));
+        $LogProvider.error('No dependencies to inject');
+        super();
     }
 }
 
@@ -188,10 +190,10 @@ class $$ProviderTypeError extends TypeError {
      * @access private
      */
     constructor() {
-        super(bread(
-            'Models cannot be called as arguments to directives. You may ' +
-            'manually inject these using `$Injector.get` if you so choose'
-        ));
+        const msg = 'Models cannot be called as arguments to directives. You ' +
+            'may manually inject these using `$Injector.get` if you so choose';
+        $LogProvider.error(msg);
+        super();
     }
 }
 
