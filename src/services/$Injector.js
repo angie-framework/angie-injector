@@ -1,5 +1,5 @@
 /**
- * @module $InjectorProvider.js
+ * @module $Injector.js
  * @author Joe Groseclose <@benderTheCrime>
  * @date 8/23/2015
  */
@@ -16,7 +16,7 @@ let $$injectorRoot;
  * @access public
  * @example $Injector.get('test');
  */
-class $InjectorProvider {
+class $Injector {
 
     /**
      * @desc Responsible for routing of dependencies
@@ -130,7 +130,7 @@ function $injectionBinder(fn = () => undefined, type) {
             /(\(|function(\s+)?([^\)\(]+)?(\s+)?\(|\)(\s+)?(=>)?(\s+)?)/g,
             ''
         ).split(',').map((v) => v.trim());
-        providers = $InjectorProvider.get.apply(global.app, args, type);
+        providers = $Injector.get.apply(global.app, args, type);
     }
     return typeof providers === 'object' ?
         fn.bind(null, ...providers) : providers ?
@@ -197,7 +197,7 @@ class $$ProviderTypeError extends TypeError {
     }
 }
 
-export default $InjectorProvider;
+export default $Injector;
 export {
     $injectionBinder,
     $$ProviderNotFoundError,

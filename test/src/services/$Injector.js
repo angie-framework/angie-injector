@@ -12,11 +12,11 @@ import {
     $$ProviderDomainError,
     $$ProviderNotFoundError,
     $$ProviderTypeError
-} from                          '../../../src/services/$InjectorProvider';
+} from                          '../../../src/services/$Injector';
 
 const bread = (v) => bold(red(v));
 
-describe('$InjectorProvider', function() {
+describe('$Injector', function() {
     let set = $Injector.$specifyInjectorRoot;
 
     afterEach(() => { set(); });
