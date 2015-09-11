@@ -4,21 +4,17 @@
   "authors": "Joe Groseclose <@benderTheCrime>",
   "description": "Standalone Dependency Injector for ES6 Modules Designed for the Angie MVC",
   "license": "MIT",
-  "main": "dist/services/$Injector.js",
+  "main": "src/services/$Injector.js",
   "private": false,
   "preferGlobal": true,
   "scripts": {
-    "test": "gulp test",
-    "postinstall": "babel src --out-dir dist --comments false"
+    "test": "gulp test"
   },
   "engines": {
-    "iojs": "*",
-    "babel-node": "*",
-    "node": "*"
+    "node": "4.x.x"
   },
   "bin": {
-    "angie-injector": "bin/angie-injector",
-    "angie-injector-dist": "bin/angie-injector-dist"
+    "angie-injector": "bin/angie-injector"
   },
   "repository": {
     "type": "git",
