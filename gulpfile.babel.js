@@ -73,6 +73,11 @@ gulp.task('mocha', function(cb) {
         return cobertura('coverage/cobertura-coverage.xml', 'svg', cb);
     });
 });
+gulp.task('babel', function() {
+    return gulp.src('src/**').pipe(babel({
+        comments: false
+    })).pipe(gulp.dest('dist'));
+});
 gulp.task('esdoc', function() {
     return gulp.src(SRC_DIR).pipe(esdoc({ destination: DOC_SRC }));
 });
@@ -98,6 +103,9 @@ gulp.task('bump', function() {
 });
 gulp.task('watch', [ 'jscs', 'mocha' ], function() {
     gulp.watch([ SRC, TEST_SRC ], [ 'mocha' ]);
+});
+gulp.task('watch:babel', [ 'babel' ], function() {
+    gulp.watch([ 'src/**' ], [ 'babel' ]);
 });
 gulp.task('test', [ 'jscs', 'mocha' ]);
 gulp.task('default', [ 'jscs', 'mocha', 'babel', 'esdoc' ]);
