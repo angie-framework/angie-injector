@@ -35,6 +35,8 @@ class $Injector {
             throw new $$ProviderDomainError();
         }
 
+        // console.log('ROOT', $$injectorRoot);
+
         let registrar,
             providers = [],
             args = arguments[0] instanceof Array ?
@@ -46,6 +48,8 @@ class $Injector {
         if (typeof $$injectorRoot.$$registry === 'object') {
             registrar = $$injectorRoot.$$registry;
         }
+
+        // console.log('REGISTRAR', registrar);
 
         // Check to see if there are any preceeding empty args
         if (args.length && args[0] === '') {
@@ -117,6 +121,8 @@ function $injectionBinder(fn = () => undefined, type) {
         args = str.match(/(function.*)?\(.*\)(\s+\=\>)?/g),
         providers = [];
 
+    console.log('FN', fn);
+
     args = args.map((v) => v.replace(/[_\s]/g, ''));
     if (args && args.length) {
 
@@ -130,8 +136,10 @@ function $injectionBinder(fn = () => undefined, type) {
             /(\(|function(\s+)?([^\)\(]+)?(\s+)?\(|\)(\s+)?(=>)?(\s+)?)/g,
             ''
         ).split(',').map((v) => v.trim());
+        console.log('ARGS', args);
         providers = $Injector.get.apply(global.app, args, type);
     }
+    console.log('PROVIDERS', providers);
     return typeof providers === 'object' ?
         fn.bind(null, ...providers) : providers ?
             fn.bind(null, providers) : fn.bind(null);
