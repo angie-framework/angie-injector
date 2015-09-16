@@ -116,33 +116,35 @@ class $Injector {
  * @param {function} The function to which values are being provided
  * @returns {function} Bound function
  */
-function $injectionBinder(fn = () => undefined, type) {
-    let str = fn.toString(),
-        args = str.match(/(function.*)?\(.*\)(\s+\=\>)?/g),
-        providers = [];
+function $injectionBinder(fn, type) {
+    const args = $$arguments(fn),
+        providers = $Injector.get.apply(global.app, args, type) || [];
 
-    console.log('FN', fn);
-
-    args = args.map((v) => v.replace(/[_\s]/g, ''));
-    if (args && args.length) {
-
-        // TODO this is probably one of the worst RegExps ever written. It is
-        // intended to match:
-        // Anonymous functions
-        // Named functions
-        // Arrow functions
-        // Closing brackets
-        args = args[0].replace(
-            /(\(|function(\s+)?([^\)\(]+)?(\s+)?\(|\)(\s+)?(=>)?(\s+)?)/g,
-            ''
-        ).split(',').map((v) => v.trim());
-        console.log('ARGS', args);
-        providers = $Injector.get.apply(global.app, args, type);
-    }
-    console.log('PROVIDERS', providers);
-    return typeof providers === 'object' ?
+    // The length of the providers should equal the list of arguments
+    return args instanceof Array && args.length ?
         fn.bind(null, ...providers) : providers ?
             fn.bind(null, providers) : fn.bind(null);
+}
+
+function $$arguments(fn = () => false) {
+    if (typeof fn === 'function') {
+        let str = fn.toString(),
+            args = str.match(/(function.*)?\(.*\)(\s+\=\>)?/g);
+        if (args && args.length) {
+            args = args.map((v) => v.replace(/[_\s]/g, ''));
+
+            // TODO this is probably one of the worst RegExps ever written. It is
+            // intended to match:
+            // Anonymous functions
+            // Named functions
+            // Arrow functions
+            // Closing brackets
+            return args[0].replace(
+                /(\(|function(\s+)?([^\)\(]+)?(\s+)?\(|\)(\s+)?(=>)?(\s+)?)/g, ''
+            ).split(',').map((v) => v.trim());
+        }
+    }
+    return [];
 }
 
 /**
@@ -208,6 +210,7 @@ class $$ProviderTypeError extends TypeError {
 export default $Injector;
 export {
     $injectionBinder,
+    $$arguments,
     $$ProviderNotFoundError,
     $$ProviderDomainError,
     $$ProviderTypeError
