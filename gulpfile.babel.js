@@ -41,7 +41,7 @@ gulp.task('jscs', [ 'eslint' ], function () {
         }));
 });
 gulp.task('istanbul:src', [ 'jscs' ], istanbulHandler.bind(null, SRC));
-gulp.task('istanbul:dist', istanbulHandler.bind(null, TRANSPILED_SRC));
+gulp.task('istanbul:dist', [ 'babel' ], istanbulHandler.bind(null, TRANSPILED_SRC));
 gulp.task('mocha:src', [ 'istanbul:src' ], function() {
     return gulp.src(TEST_SRC).pipe(mocha({
         reporter: 'spec'
