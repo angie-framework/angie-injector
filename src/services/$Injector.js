@@ -5,7 +5,11 @@
  */
 
 // System Modules
-import $LogProvider from    'angie-log';
+import { cyan } from            'chalk';
+import $LogProvider from        'angie-log';
+
+// Project Modules
+import * as $Exceptions from    './$Exceptions';
 
 let $$injectorRoot;
 
@@ -20,10 +24,10 @@ class $Injector {
 
     /**
      * @desc Responsible for routing of dependencies
-     * @since 0.0.1
-     * @access public
      * @param {object|string} The name or array of names of providers to fetch
      * @returns {object|string|number|Array<>|boolean} The provider value
+     * @since 0.0.1
+     * @access public
      * @example $Injector.get('$scope'); // = { $id: 1 }
      */
     static get() {
@@ -32,10 +36,8 @@ class $Injector {
         $$injectorRoot = $$injectorRoot || global.app || {};
 
         if (!Object.keys($$injectorRoot).length) {
-            throw new $$ProviderDomainError();
+            throw new $Exceptions.$$ProviderDomainError();
         }
-
-        // console.log('ROOT', $$injectorRoot);
 
         let registrar,
             providers = [],
@@ -47,13 +49,6 @@ class $Injector {
         // Check to see if a registrar exists
         if (typeof $$injectorRoot.$$registry === 'object') {
             registrar = $$injectorRoot.$$registry;
-        }
-
-        // console.log('REGISTRAR', registrar);
-
-        // Check to see if there are any preceeding empty args
-        if (args.length && args[0] === '') {
-            args.shift();
         }
 
         args.forEach(function(arg) {
@@ -70,7 +65,7 @@ class $Injector {
                 registrar && registrar[ arg ] === 'Model' &&
                 type && type === 'directive'
             ) {
-                throw new $$ProviderTypeError();
+                throw new $Exceptions.$$ProviderTypeError();
             }
 
             // Try to find the provider in the registrar or the declared object
@@ -88,19 +83,19 @@ class $Injector {
             catch(e) {
 
                 // If no provider could be found, there is a big problem
-                throw new $$ProviderNotFoundError(arg);
+                throw new $Exceptions.$$ProviderNotFoundError(arg);
             }
         });
-        return providers.length > 1 ? providers : (providers[0] ? providers[0] : []);
+        return providers.length > 1 ? providers : providers[0] ? providers[0] : [];
     }
 
     /**
      * @desc Specifies the root object from which dependencies are fetched
-     * @since 0.0.1
-     * @access public
      * @param {object} r [param={}] The object from which dependencies are
      * fetched
      * @returns {object} The root object vaule
+     * @since 0.0.1
+     * @access public
      * @example $Injector.$specifyInjectorRoot({});
      */
     static $specifyInjectorRoot(r = {}) {
@@ -111,25 +106,33 @@ class $Injector {
 
 /**
  * @desc Responsible for binding of dependencies to functions
+ * @param {function} fn The function to which values are being provided
+ * @param {string} type An optional Angie module type
+ * @returns {function} Bound function
  * @since 0.0.1
  * @access public
- * @param {function} The function to which values are being provided
- * @returns {function} Bound function
  */
 function $injectionBinder(fn, type) {
     const args = $$arguments(fn),
         providers = $Injector.get.apply(global.app, args, type) || [];
-
-    // The length of the providers should equal the list of arguments
-    return args instanceof Array && args.length ?
-        fn.bind(null, ...providers) : providers ?
-            fn.bind(null, providers) : fn.bind(null);
+    return providers instanceof Array ? fn.bind(null, ...providers) : providers ?
+        fn.bind(null, providers) : fn.bind(null);
 }
 
+
+/**
+ * @desc Parses dependencies out of a function using
+ * `Function.prototype.toString`
+ * @param {function} fn The function to which values are being provided
+ * @returns {function} Bound function
+ * @since 0.9.15
+ * @access private
+ */
 function $$arguments(fn = () => false) {
     if (typeof fn === 'function') {
         let str = fn.toString(),
             args = str.match(/(function.*)?\(.*\)(\s+\=\>)?/g);
+
         if (args && args.length) {
             args = args.map((v) => v.replace(/[_\s]/g, ''));
 
@@ -139,79 +142,17 @@ function $$arguments(fn = () => false) {
             // Named functions
             // Arrow functions
             // Closing brackets
-            return args[0].replace(
+            let argStr = args[0].replace(
                 /(\(|function(\s+)?([^\)\(]+)?(\s+)?\(|\)(\s+)?(=>)?(\s+)?)/g, ''
-            ).split(',').map((v) => v.trim());
+            );
+
+            if (argStr.length) {
+                return argStr.split(',').map((v) => v.trim());
+            }
         }
     }
     return [];
 }
 
-/**
- * @desc Handles Errors for unfound injection resources
- * @since 0.0.1
- * @extends {RangeError}
- * @access private
- */
-class $$ProviderNotFoundError extends RangeError {
-
-    /**
-     * @desc Throws a RangeError based on an unfound module name
-     * @param {string} name Module name that was not found
-     * @since 0.0.1
-     * @access private
-     */
-    constructor(name = 'module') {
-        $LogProvider.error(`Cannot find ${name} in module registry`);
-        super();
-    }
-}
-
-/**
- * @desc Handles Errors for empty $Injector requests
- * @since 0.0.1
- * @extends {ReferenceError}
- * @access private
- */
-class $$ProviderDomainError extends ReferenceError {
-
-    /**
-     * @desc Throws a ReferenceError
-     * @since 0.0.1
-     * @access private
-     */
-    constructor() {
-        $LogProvider.error('No dependencies to inject');
-        super();
-    }
-}
-
-/**
- * @desc Handles Errors for empty $Injector requests
- * @since 0.0.1
- * @extends {TypeError}
- * @access private
- */
-class $$ProviderTypeError extends TypeError {
-
-    /**
-     * @desc Throws a TypeError
-     * @since 0.0.1
-     * @access private
-     */
-    constructor() {
-        const msg = 'Models cannot be called as arguments to directives. You ' +
-            'may manually inject these using `$Injector.get` if you so choose';
-        $LogProvider.error(msg);
-        super();
-    }
-}
-
 export default $Injector;
-export {
-    $injectionBinder,
-    $$arguments,
-    $$ProviderNotFoundError,
-    $$ProviderDomainError,
-    $$ProviderTypeError
-};
+export { $injectionBinder, $$arguments };
