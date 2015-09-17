@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.9.15] - 2015-09-17
+##### Changed/Added
+- Modified file and export names
+- Modified the way in which arguments are broken out of functions. This functionality has been moved to a new private method.
+- Improved exception messaging, moved exception classes out to an exclusive file
+- Added tests around transpiled distribution files
+
 #### [0.9.14] - 2015-09-07
 ##### Changed
 - Change the structure and content of the $Injector invoked exceptions:
