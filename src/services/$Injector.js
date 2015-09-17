@@ -91,7 +91,7 @@ class $Injector {
                 throw new $$ProviderNotFoundError(arg);
             }
         });
-        return providers.length > 1 ? providers : providers[0] ? providers[0] : [];
+        return providers.length > 1 ? providers : (providers[0] ? providers[0] : []);
     }
 
     /**
