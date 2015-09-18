@@ -4,10 +4,6 @@
  * @date 8/23/2015
  */
 
-// System Modules
-import { cyan } from            'chalk';
-import $LogProvider from        'angie-log';
-
 // Project Modules
 import * as $Exceptions from    './$Exceptions';
 

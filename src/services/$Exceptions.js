@@ -11,10 +11,9 @@ import $LogProvider from    'angie-log';
 /**
  * @desc Handles Errors for unfound injection resources
  * @since 0.0.1
- * @extends {RangeError}
  * @access private
  */
-class $$ProviderNotFoundError extends RangeError {
+class $$ProviderNotFoundError {
 
     /**
      * @desc Throws a RangeError based on an unfound module name
@@ -23,18 +22,18 @@ class $$ProviderNotFoundError extends RangeError {
      * @access private
      */
     constructor(name = 'module') {
-        $LogProvider.error(`Cannot find ${cyan(name)} in module registry`);
-        super();
+        const msg = `Cannot find ${cyan(name)} in module registry`;
+        $LogProvider.error(msg);
+        throw new RangeError(msg);
     }
 }
 
 /**
  * @desc Handles Errors for empty $Injector requests
  * @since 0.0.1
- * @extends {ReferenceError}
  * @access private
  */
-class $$ProviderDomainError extends ReferenceError {
+class $$ProviderDomainError {
 
     /**
      * @desc Throws a ReferenceError
@@ -42,18 +41,18 @@ class $$ProviderDomainError extends ReferenceError {
      * @access private
      */
     constructor() {
-        $LogProvider.error('No dependencies to inject');
-        super();
+        const msg = 'No dependencies to inject';
+        $LogProvider.error(msg);
+        throw new ReferenceError(msg);
     }
 }
 
 /**
  * @desc Handles Errors for empty $Injector requests
  * @since 0.0.1
- * @extends {TypeError}
  * @access private
  */
-class $$ProviderTypeError extends TypeError {
+class $$ProviderTypeError {
 
     /**
      * @desc Throws a TypeError
@@ -64,7 +63,7 @@ class $$ProviderTypeError extends TypeError {
         const msg = 'Models cannot be called as arguments to directives. You ' +
             'may manually inject these using `$Injector.get` if you so choose';
         $LogProvider.error(msg);
-        super();
+        throw new TypeError(msg);
     }
 }
 
