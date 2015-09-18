@@ -22,10 +22,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/benderTheCrime/angie-injector.git"
+    "url": "https://github.com/angie-framework/angie-injector.git"
   },
   "bugs": {
-    "url": "https://github.com/benderTheCrime/angie-injector.git/issues"
+    "url": "https://github.com/angie-framework/angie-injector.git/issues"
   },
   "keywords": [
     "Angie",
