@@ -1,6 +1,6 @@
 {
   "name": "angie-injector",
-  "version": "0.9.15",
+  "version": "0.10.0",
   "authors": "Joe Groseclose <@benderTheCrime>",
   "description": "Standalone Dependency Injector for ES6 Modules Designed for the Angie MVC",
   "license": "MIT",
