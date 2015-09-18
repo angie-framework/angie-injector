@@ -27,9 +27,6 @@ describe('$Exceptions', function() {
 
                     /* eslint-enable */
                 }).to.throw(RangeError);
-                // expect($LogProvider.error.calls[0].args[0]).to.eq(
-                //     `Cannot find ${cyan('test')} in module registry`
-                // );
             });
             it('test called without module', function() {
 
