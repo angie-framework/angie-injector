@@ -2,12 +2,10 @@
 import { expect } from          'chai';
 
 // Angie Injector Modules
-import * as $Exceptions from    '../../../src/services/$Exceptions';
-import {
-    default as $Injector,
-    $injectionBinder,
-    $$arguments
-} from                          '../../../src/services/$Injector';
+const $InjectorProvider =       require(`../../../${global.TEST_ENV}/services/$Injector`),
+    $Injector = $InjectorProvider.default,
+    $injectionBinder = $InjectorProvider.$injectionBinder,
+    $$arguments = $InjectorProvider.$$arguments;
 
 describe('$Injector', function() {
     let set = $Injector.$specifyInjectorRoot;
@@ -20,7 +18,7 @@ describe('$Injector', function() {
             set();
             expect(
                 get.bind(null, 'test')
-            ).to.throw($Exceptions.$$ProviderDomainError);
+            ).to.throw(ReferenceError);
         });
         describe('registrar', function() {
             beforeEach(function() {
@@ -48,7 +46,7 @@ describe('$Injector', function() {
             it('test argument not found', function() {
                 expect(
                     get.bind(null, 'test', 'test1', 'test2')
-                ).to.throw($Exceptions.$$ProviderNotFoundError);
+                ).to.throw(RangeError);
             });
             it('test all arguments found', function() {
                 set({
@@ -70,7 +68,7 @@ describe('$Injector', function() {
             it('test directive requests Model injection', function() {
                 expect(
                     get.bind(null, [ 'test4' ], 'directive')
-                ).to.throw($Exceptions.$$ProviderTypeError);
+                ).to.throw(TypeError);
             });
         });
         describe('test no registrar', function() {
@@ -99,7 +97,7 @@ describe('$Injector', function() {
             it('test argument not found', function() {
                 expect(
                     get.bind(null, 'test', 'test1', 'test2')
-                ).to.throw($Exceptions.$$ProviderNotFoundError);
+                ).to.throw(RangeError);
             });
             it('test no registrar with many arguments', function() {
                 expect(

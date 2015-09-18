@@ -56,12 +56,12 @@ gulp.task('mocha:src', [ 'istanbul:src' ], function() {
 gulp.task(
     'mocha:src',
     [ 'istanbul:src' ],
-    mochaHandler.bind(null, TEST_SRC, COVERAGE_SRC)
+    mochaHandler.bind(null, 'src', COVERAGE_SRC)
 );
 gulp.task(
     'mocha:dist',
     [ 'istanbul:dist' ],
-    mochaHandler.bind(null, TRANSPILED_TEST_SRC, undefined)
+    mochaHandler.bind(null, 'dist', undefined)
 );
 gulp.task('cobertura:src', [ 'mocha:src' ], function(cb) {
     cobertura('coverage/cobertura-coverage.xml', 'svg', cb);
@@ -116,7 +116,8 @@ function istanbulHandler(src, cb) {
 }
 
 function mochaHandler(src, coverage = '/tmp') {
-    return gulp.src(src).pipe(mocha({
+    global.TEST_ENV = src;
+    return gulp.src(TEST_SRC).pipe(mocha({
         reporter: 'spec'
     })).pipe(istanbul.writeReports({
         dir: coverage,
