@@ -6,7 +6,7 @@ import { mock } from            'simple-mock';
 import { cyan } from            'chalk';
 import $LogProvider from        'angie-log';
 
-// Project Modules
+// Angie Injector Modules
 // Use require to resolve import string literal limitations
 const $Exceptions =             require(`../../../${global.TEST_ENV}/services/$Exceptions`);
 
