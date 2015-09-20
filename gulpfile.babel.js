@@ -102,7 +102,7 @@ gulp.task('watch:babel', [ 'babel' ], function() {
 });
 gulp.task('test:src', [ 'jscs', 'mocha:src' ]);
 gulp.task('test:dist', [ 'mocha:dist' ]);
-gulp.task('test', [ 'test:src', 'test:dist' ]);
+gulp.task('test', [ 'test:src' ]);
 gulp.task('default', [ 'cobertura', 'babel', 'esdoc' ]);
 
 function istanbulHandler(src, cb) {
