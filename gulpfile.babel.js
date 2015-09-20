@@ -63,7 +63,7 @@ gulp.task(
     [ 'istanbul:dist' ],
     mochaHandler.bind(null, 'dist', undefined)
 );
-gulp.task('cobertura:src', [ 'mocha:src' ], function(cb) {
+gulp.task('cobertura', [ 'mocha:src' ], function(cb) {
     cobertura('coverage/cobertura-coverage.xml', 'svg', cb);
 });
 gulp.task('babel', function() {
@@ -103,7 +103,7 @@ gulp.task('watch:babel', [ 'babel' ], function() {
 gulp.task('test:src', [ 'jscs', 'mocha:src' ]);
 gulp.task('test:dist', [ 'mocha:dist' ]);
 gulp.task('test', [ 'test:src', 'test:dist' ]);
-gulp.task('default', [ 'jscs', 'mocha:src', 'babel', 'esdoc' ]);
+gulp.task('default', [ 'cobertura', 'babel', 'esdoc' ]);
 
 function istanbulHandler(src, cb) {
     gulp.src(src).pipe(istanbul({
