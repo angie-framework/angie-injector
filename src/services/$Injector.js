@@ -1,13 +1,12 @@
 /**
- * @module $InjectorProvider.js
+ * @module $Injector.js
  * @author Joe Groseclose <@benderTheCrime>
  * @date 8/23/2015
  */
 
-// System Modules
-import {bold, red} from   'chalk';
+// Project Modules
+import * as $Exceptions from    './$Exceptions';
 
-const bread = (v) => bold(red(v));
 let $$injectorRoot;
 
 /**
@@ -17,22 +16,23 @@ let $$injectorRoot;
  * @access public
  * @example $Injector.get('test');
  */
-class $InjectorProvider {
+class $Injector {
 
     /**
      * @desc Responsible for routing of dependencies
-     * @since 0.0.1
-     * @access public
      * @param {object|string} The name or array of names of providers to fetch
      * @returns {object|string|number|Array<>|boolean} The provider value
+     * @since 0.0.1
+     * @access public
      * @example $Injector.get('$scope'); // = { $id: 1 }
      */
     static get() {
 
         // Declare the root from which dependencies are provided and check keys
         $$injectorRoot = $$injectorRoot || global.app || {};
+
         if (!Object.keys($$injectorRoot).length) {
-            throw new $$ProviderDomainError();
+            throw new $Exceptions.$$ProviderDomainError();
         }
 
         let registrar,
@@ -45,11 +45,6 @@ class $InjectorProvider {
         // Check to see if a registrar exists
         if (typeof $$injectorRoot.$$registry === 'object') {
             registrar = $$injectorRoot.$$registry;
-        }
-
-        // Check to see if there are any preceeding empty args
-        if (args.length && args[0] === '') {
-            args.shift();
         }
 
         args.forEach(function(arg) {
@@ -66,7 +61,7 @@ class $InjectorProvider {
                 registrar && registrar[ arg ] === 'Model' &&
                 type && type === 'directive'
             ) {
-                throw new $$ProviderTypeError();
+                throw new $Exceptions.$$ProviderTypeError();
             }
 
             // Try to find the provider in the registrar or the declared object
@@ -84,7 +79,7 @@ class $InjectorProvider {
             catch(e) {
 
                 // If no provider could be found, there is a big problem
-                throw new $$ProviderNotFoundError(arg);
+                throw new $Exceptions.$$ProviderNotFoundError(arg);
             }
         });
         return providers.length > 1 ? providers : providers[0] ? providers[0] : [];
@@ -92,11 +87,11 @@ class $InjectorProvider {
 
     /**
      * @desc Specifies the root object from which dependencies are fetched
-     * @since 0.0.1
-     * @access public
      * @param {object} r [param={}] The object from which dependencies are
      * fetched
      * @returns {object} The root object vaule
+     * @since 0.0.1
+     * @access public
      * @example $Injector.$specifyInjectorRoot({});
      */
     static $specifyInjectorRoot(r = {}) {
@@ -107,98 +102,53 @@ class $InjectorProvider {
 
 /**
  * @desc Responsible for binding of dependencies to functions
+ * @param {function} fn The function to which values are being provided
+ * @param {string} type An optional Angie module type
+ * @returns {function} Bound function
  * @since 0.0.1
  * @access public
- * @param {function} The function to which values are being provided
+ */
+function $injectionBinder(fn, type) {
+    const args = $$arguments(fn),
+        providers = $Injector.get.apply(global.app, args, type) || [];
+    return providers instanceof Array ? fn.bind(null, ...providers) : providers ?
+        fn.bind(null, providers) : fn.bind(null);
+}
+
+
+/**
+ * @desc Parses dependencies out of a function using
+ * `Function.prototype.toString`
+ * @param {function} fn The function to which values are being provided
  * @returns {function} Bound function
- */
-function $injectionBinder(fn = () => undefined, type) {
-    let str = fn.toString(),
-        args = str.match(/(function.*)?\(.*\)(\s+\=\>)?/g),
-        providers = [];
-
-    args = args.map((v) => v.replace(/[_\s]/g, ''));
-    if (args && args.length) {
-
-        // TODO this is probably one of the worst RegExps ever written. It is
-        // intended to match:
-        // Anonymous functions
-        // Named functions
-        // Arrow functions
-        // Closing brackets
-        args = args[0].replace(
-            /(\(|function(\s+)?([^\)\(]+)?(\s+)?\(|\)(\s+)?(=>)?(\s+)?)/g,
-            ''
-        ).split(',').map((v) => v.trim());
-        providers = $InjectorProvider.get.apply(global.app, args, type);
-    }
-    return typeof providers === 'object' ?
-        fn.bind(null, ...providers) : providers ?
-            fn.bind(null, providers) : fn.bind(null);
-}
-
-/**
- * @desc Handles Errors for unfound injection resources
- * @since 0.0.1
- * @extends {RangeError}
+ * @since 0.9.15
  * @access private
  */
-class $$ProviderNotFoundError extends RangeError {
+function $$arguments(fn = () => false) {
+    if (typeof fn === 'function') {
+        let str = fn.toString(),
+            args = str.match(/(function.*)?\(.*\)(\s+\=\>)?/g);
 
-    /**
-     * @desc Throws a RangeError based on an unfound module name
-     * @param {string} name Module name that was not found
-     * @since 0.0.1
-     * @access private
-     */
-    constructor(name = 'module') {
-        super(bread(`Cannot find ${name} in module registry`));
+        if (args && args.length) {
+            args = args.map((v) => v.replace(/[_\s]/g, ''));
+
+            // TODO this is probably one of the worst RegExps ever written. It is
+            // intended to match:
+            // Anonymous functions
+            // Named functions
+            // Arrow functions
+            // Closing brackets
+            let argStr = args[0].replace(
+                /(\(|function(\s+)?([^\)\(]+)?(\s+)?\(|\)(\s+)?(=>)?(\s+)?)/g, ''
+            );
+
+            if (argStr.length) {
+                return argStr.split(',').map((v) => v.trim());
+            }
+        }
     }
+    return [];
 }
 
-/**
- * @desc Handles Errors for empty $Injector requests
- * @since 0.0.1
- * @extends {ReferenceError}
- * @access private
- */
-class $$ProviderDomainError extends ReferenceError {
-
-    /**
-     * @desc Throws a ReferenceError
-     * @since 0.0.1
-     * @access private
-     */
-    constructor() {
-        super(bread('No dependencies to inject'));
-    }
-}
-
-/**
- * @desc Handles Errors for empty $Injector requests
- * @since 0.0.1
- * @extends {TypeError}
- * @access private
- */
-class $$ProviderTypeError extends TypeError {
-
-    /**
-     * @desc Throws a TypeError
-     * @since 0.0.1
-     * @access private
-     */
-    constructor() {
-        super(bread(
-            'Models cannot be called as arguments to directives. You may ' +
-            'manually inject these using `$Injector.get` if you so choose'
-        ));
-    }
-}
-
-export default $InjectorProvider;
-export {
-    $injectionBinder,
-    $$ProviderNotFoundError,
-    $$ProviderDomainError,
-    $$ProviderTypeError
-};
+export default $Injector;
+export { $injectionBinder, $$arguments };
