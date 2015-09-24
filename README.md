@@ -9,7 +9,7 @@
 [![NPM](https://nodei.co/npm/angie-injector.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/angie-injector/)
 
 ## About
-This is a very slim dependency injector for iojs/NodeJS ES6 projects. It will work standalone, or as an extension to the [Angie MVC](https://github.com/benderTheCrime/angie).
+This is a very slim dependency injector for iojs/NodeJS ES6 projects. It will work standalone, or as an extension to the [Angie Framework](https://github.com/angie-injector/angie).
 
 ## Usage
 ```bash
@@ -47,7 +47,7 @@ class Test {
 }
 ```
 
-For a list of Frequently Asked Questions, please see the [FAQ](https://github.com/benderTheCrime/angie-injector/blob/master/FAQ.md "FAQ") and the [CHANGELOG](https://github.com/benderTheCrime/angie-injector/blob/master/CHANGELOG.md "CHANGELOG") for an up to date list of changes. Contributors to this Project are outlined in the [CONTRIBUTORS](https://github.com/benderTheCrime/angie-injector/blob/master/CONTRIBUTORS.md "CONTRIBUTORS") file.
+For a list of Frequently Asked Questions, please see the [FAQ](https://github.com/angie-framework/angie-injector/blob/master/FAQ.md "FAQ") and the [CHANGELOG](https://github.com/angie-framework/angie-injector/blob/master/CHANGELOG.md "CHANGELOG") for an up to date list of changes. Contributors to this Project are outlined in the [CONTRIBUTORS](https://github.com/angie-framework/angie-injector/blob/master/CONTRIBUTORS.md "CONTRIBUTORS") file.
 
 ### Angie
 Please see the [site](http://benderthecrime.github.io/angie/) for information about the project, a quickstart guide, and documentation and the [CHANGELOG](https://github.com/benderTheCrime/angie/blob/master/CHANGELOG.md) for an up to date list of changes.

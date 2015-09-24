@@ -2,12 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### [0.10.0] - 2015-09-17
+#### Changed/Added
+- Modified file and export names
+- Modified the way in which arguments are broken out of functions. This functionality has been moved to a new private method.
+- Improved exception messaging, moved exception classes out to an exclusive file
+- Added tests around transpiled distribution files
+
 #### [0.9.14] - 2015-09-07
 ##### Changed
 - Change the structure and content of the $Injector invoked exceptions:
-* $$ProviderNotFoundError
-* $$ProviderDomainError
-* $$ProviderTypeError
+    - $$ProviderNotFoundError
+    - $$ProviderDomainError
+    - $$ProviderTypeError
 
 #### [0.9.13] - 2015-08-30
 ##### Fixed
@@ -67,8 +74,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ##### Fixed
 - Fixed the way this package is required
 
-## [0.9.0] - 2015-07-11
-### Added
+### [0.9.0] - 2015-07-11
+#### Added
 - Added ability to specify the object from which objects are injected
 
 #### [0.0.1] - 2015-07-11
