@@ -1,10 +1,10 @@
 {
   "name": "angie-injector",
-  "version": "0.9.14",
+  "version": "0.10.0",
   "authors": "Joe Groseclose <@benderTheCrime>",
-  "description": "Standalone Dependency Injector for ES6 Modules Designed for the Angie MVC",
+  "description": "Standalone Dependency Injector for ES6 Modules Designed for the Angie Framework",
   "license": "MIT",
-  "main": "dist/services/$InjectorProvider.js",
+  "main": "dist/services/$Injector.js",
   "private": false,
   "preferGlobal": true,
   "scripts": {
@@ -22,10 +22,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/benderTheCrime/angie-injector.git"
+    "url": "https://github.com/angie-framework/angie-injector.git"
   },
   "bugs": {
-    "url": "https://github.com/benderTheCrime/angie-injector.git/issues"
+    "url": "https://github.com/angie-framework/angie-injector.git/issues"
   },
   "keywords": [
     "Angie",
