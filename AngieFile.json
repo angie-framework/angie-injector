@@ -1,4 +1,6 @@
 {
     "projectName": "$InjectorProvider",
-    "dependencies": []
+    "dependencies": [
+        "angie-log"
+    ]
 }
