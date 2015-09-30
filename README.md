@@ -53,5 +53,8 @@ class Test {
 
 For a list of Frequently Asked Questions, please see the [FAQ](https://github.com/angie-framework/angie-injector/blob/master/FAQ.md "FAQ") and the [CHANGELOG](https://github.com/angie-framework/angie-injector/blob/master/CHANGELOG.md "CHANGELOG") for an up to date list of changes. Contributors to this Project are outlined in the [CONTRIBUTORS](https://github.com/angie-framework/angie-injector/blob/master/CONTRIBUTORS.md "CONTRIBUTORS") file.
 
+## Documentation
+Angie Injector documentation can be found [here](https://doc.esdoc.org/github.com/angie-framework/angie/ "documentation").
+
 ### Angie
 Please see the [site](http://benderthecrime.github.io/angie/) for information about the project, a quickstart guide, and documentation and the [CHANGELOG](https://github.com/benderTheCrime/angie/blob/master/CHANGELOG.md) for an up to date list of changes.
