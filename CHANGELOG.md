@@ -2,8 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.10.1] - 2015-09-29
+##### Changed
+- Modified README
+
 ### [0.10.0] - 2015-09-17
-#### Changed/Added
+#### Added/Changed
 - Modified file and export names
 - Modified the way in which arguments are broken out of functions. This functionality has been moved to a new private method.
 - Improved exception messaging, moved exception classes out to an exclusive file
@@ -48,7 +52,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Changed the postinstall and prepublish npm scripts
 
 #### [0.9.6] - 2015-08-23
-##### Removed/Added
+##### Added/Removed
 - Removed documentation from `.gitignore`
 - Removed unnecessary `use strict;` lines from many files.
 - Created a `dist` folder/runtime with an equivalent pre-compiled Angie Log framework.
@@ -66,7 +70,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed coverage report
 
 #### [0.9.2] - 2015-07-16
-##### Fixed/Added
+##### Added/Fixed
 - Fixed the $$registry flag for use with Angie MVC
 - Added documentation around Exception classes
 
