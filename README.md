@@ -2,7 +2,7 @@
 
 ## Angie Injector
 
-[![npm version](https://badge.fury.io/js/angie-injector.svg)](http://badge.fury.io/js/angie-injector)
+[![npm version](https://badge.fury.io/js/angie-injector.svg)](http://badge.fury.io/js/angie-injector "npm version")
 ![iojs support](https://img.shields.io/badge/iojs-1.7.1+-brightgreen.svg "iojs support")
 ![node support](https://img.shields.io/badge/node-0.12.0+-brightgreen.svg "node support")
 ![npm downloads](https://img.shields.io/npm/dm/angie-injector.svg "npm downloads")
