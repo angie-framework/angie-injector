@@ -9,6 +9,6 @@ deploy:
   api_key:
     secure: p7yKLBeF7GnOubPxUkPnFHE/l/LXEc9ZRG8Nb6hjw+J0Be422vfgLOFc6jMQq281og3KBW7udeoDr21lioGlEAgR5SYadbb34cC+/4eN7S9kIbZfyi46PGFxGKFEUdTvxRt7ODBOsPJ4JtjO7kSpw/k6b4g/OEODTqhLeiVp8pFOie5S5fQJYenox67IWW79TFRIYKN9X6xqxZ/JGYGDqfGUYC92ZIn9y1YaPwWmCM7Mo4fRBpRGSbKEw+Ism8YbhRYyehqY7Wy8gPhyMyWyIX/ak/JLVjd5xQYBL9OQX/+86rA+QxhYDGEXP5CYKKYa+INRKR2vVFx0zn8rqIWT9YLL8wZRDpOMk40xeyPrz7ttFhufUu+ibq/E9fu1fvdc/CyBMqApw85VPiGMW1Lh9cp4s72kyWYtKFIvRTp+aFHfsppbMeYsJuwbjnNQUmHmvdvOjDMMSmnRLY8xIU57KAtPOCNB9S2s66HIvABlgt/GJpIFwn3ivEiO6P5oQ/+1DDtQRAvztiJFuHbENqpxItLSg5kAiSKBd/QwF4Np3o6DA/xLQ/HxcMV+EAmh4w8F6Z+a7BpTtwDYDY9OC4FYLjoAoaYzJfowsiY+CunOCKrRTDZ5ew+AYsnr7MOrMc1FMXE8bG9N1bTrhBqvttLw94veiSiUtRKUbYDacQC8H0g=
   on:
-    tags: true
+    node: 4.0.0
     repo: benderTheCrime/angie-injector
     branch: master
