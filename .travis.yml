@@ -1,10 +1,11 @@
 language: node_js
 node_js:
-- 0.12
-- iojs-2.5.0
-- 4.0.0
+  - 0.12
+  - iojs-2.5.0
+  - 4.0.0
 deploy:
-  api_key:
-    secure: TRLV1EpcQep5W7FElXLTe4d6HifLgW03bBanzQgTPmDZPJU1PXXHJMFRaBg4hrqG/KccJQsOg/vgqHKHU5rbVsJx476jLX/WfeRq6KArQMpnU+hQNfCXt34g8QM+9RGCb6Ga0l9cuULU1EntB4onKOJg7j49hmSDkh9EWi4HWLQeudlBdOZOyDhPAXwTkD5TUxGK59YVossqONNEnlWMYbyifyH40apZmxijM/1/U5ilJcAuwblEEITlNNHmdMXOPbmK8qgHxDyr60Rkom6C1VRbQH0/0rHH9LzH+z/9b61AEr4oLwhbvZ7b2BtK/oMWRzQG9YIq7377S9C+UCvdq1dbGwJPiIryZAfdRicu3odIePt8sZVABSU2WfL3414otcOiBpwP0fjJFP4hyD5OeAwdqmW22G2N5E265GRslW28cyRhwlM9+0vJVllgXgBkMjZT0wUlpmESMNYX3oe6dqP5IMGOsP0saF/uQfEpybXAxwj5cz2gyxTzy8bq0M5BEA9cxJQSisJWFHCmT+y9Nop5qV5GSR69rdoF8kNOl1fOk+f9qBw4ugM66r2Haus7o4q7w32kXN7BNSbAkNw0lWugVsa171ungxxoDP3gpMlqFeIs2uODx8v9+y335TkOlLKAQoPOYQ154vVd/uCZV17Kb5u3g6YFK4Wfu8GJbts=
-  email: joe.groseclose@gmail.com
   provider: npm
+  api_key:
+  email: joe.groseclose@gmail.com
+  on:
+    - tags: true

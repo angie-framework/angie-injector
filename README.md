@@ -1,10 +1,14 @@
+![emblem](https://rawgit.com/angie-framework/angie-injector/master/svg/angie.svg "emblem")
+
 ## Angie Injector
 
-![build status](https://travis-ci.org/benderTheCrime/angie-injector.svg?branch=master "build status")
+[![npm version](https://badge.fury.io/js/angie-injector.svg)](http://badge.fury.io/js/angie-injector)
 ![iojs support](https://img.shields.io/badge/iojs-1.7.1+-brightgreen.svg "iojs support")
 ![node support](https://img.shields.io/badge/node-0.12.0+-brightgreen.svg "node support")
+![build status](https://travis-ci.org/benderTheCrime/angie-injector.svg?branch=master "build status")
 ![code coverage](https://rawgit.com/benderTheCrime/angie-injector/master/svg/coverage.svg "code coverage")
 ![npm downloads](https://img.shields.io/npm/dm/angie-injector.svg "npm downloads")
+![documentation](https://doc.esdoc.org/github.com/angie-framework/angie-injector/badge.svg "documentation")
 
 [![NPM](https://nodei.co/npm/angie-injector.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/angie-injector/)
 
