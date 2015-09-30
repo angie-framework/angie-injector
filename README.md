@@ -8,7 +8,7 @@
 ![npm downloads](https://img.shields.io/npm/dm/angie-injector.svg "npm downloads")
 ![build status](https://travis-ci.org/benderTheCrime/angie-injector.svg?branch=master "build status")
 ![code coverage](https://rawgit.com/angie-framework/angie-injector/master/svg/coverage.svg "code coverage")
-![documentation](https://doc.esdoc.org/github.com/angie-framework/angie-injector/badge.svg "documentation")
+[![documentation](https://doc.esdoc.org/github.com/angie-framework/angie-injector/badge.svg)](https://doc.esdoc.org/github.com/angie-framework/angie-injector/ "documentation")
 
 [![NPM](https://nodei.co/npm/angie-injector.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/angie-injector/)
 
