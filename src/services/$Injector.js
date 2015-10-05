@@ -52,7 +52,7 @@ class $Injector {
 
             // Doing this for safety reasons...if the arg didn't come from IB,
             // it potentially has unsafe spaces, underscores
-            arg = arg.toString().replace(/(^(_)|[\s]|(_)$)/g, '');
+            arg = arg.toString().replace(/(^(\_+)|[\s]|(\_+)$)/g, '');
 
             // Rename convention for the $scope service
             if (arg === 'scope') {
@@ -110,7 +110,7 @@ class $Injector {
  */
 function $injectionBinder(fn, type) {
     const args = $$arguments(fn),
-        providers = $Injector.get.apply(global.app, args, type) || [];
+        providers = $Injector.get.apply(global.app, [ args, type ]);
     return providers instanceof Array ? fn.bind(null, ...providers) : providers ?
         fn.bind(null, providers) : fn.bind(null);
 }
