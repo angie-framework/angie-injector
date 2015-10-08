@@ -22,6 +22,8 @@ class $Injector {
      * @desc Responsible for routing of dependencies
      * @param {object|string} The name or array of names of providers to fetch
      * @returns {object|string|number|Array<>|boolean} The provider value
+     * @todo Replace `Array.prototype.slice.call` with `Array.from` when it is
+     * supported without the polyfill
      * @since 0.0.1
      * @access public
      * @example $Injector.get('$scope'); // = { $id: 1 }
@@ -38,7 +40,7 @@ class $Injector {
         let registrar,
             providers = [],
             args = arguments[0] instanceof Array ?
-                arguments[0] : Array.from(arguments),
+                arguments[0] : Array.prototype.slice.call(arguments),
             type = arguments[0] instanceof Array && arguments[1] ?
                 arguments[1] : null;
 
