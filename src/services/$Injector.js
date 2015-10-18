@@ -53,8 +53,8 @@ class $Injector {
             let provider;
 
             // Doing this for safety reasons...if the arg didn't come from IB,
-            // it potentially has unsafe spaces, underscores
-            arg = arg.toString().replace(/(^(\_+)|[\s]|(\_+)$)/g, '');
+            // it potentially has unsafe spaces and underscores
+            arg = arg.toString().replace(/^(_){0,2}|(_){0,2}$|\s/g, '').trim();
 
             // Rename convention for the $scope service
             if (arg === 'scope') {
@@ -123,6 +123,7 @@ function $injectionBinder(fn, type) {
  * `Function.prototype.toString`
  * @param {function} fn The function to which values are being provided
  * @returns {function} Bound function
+ * @todo Fix functional argument parsing RegExp
  * @since 0.9.15
  * @access private
  */

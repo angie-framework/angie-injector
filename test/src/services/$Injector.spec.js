@@ -3,10 +3,11 @@ import { expect } from          'chai';
 
 // Angie Injector Modules
 // Use require to resolve import string literal limitations
-const $InjectorProvider =       require(`../../../${global.TEST_ENV}/services/$Injector`),
-    $Injector = $InjectorProvider.default,
-    $injectionBinder = $InjectorProvider.$injectionBinder,
-    $$arguments = $InjectorProvider.$$arguments;
+const TEST_ENV =                global.TEST_ENV || 'src',
+    $InjectorProvider =         require(`../../../${TEST_ENV}/services/$Injector`),
+    $Injector =                 $InjectorProvider.default,
+    $injectionBinder =          $InjectorProvider.$injectionBinder,
+    $$arguments =               $InjectorProvider.$$arguments;
 
 describe('$Injector', function() {
     let set = $Injector.$specifyInjectorRoot;
@@ -41,8 +42,20 @@ describe('$Injector', function() {
             it('test get returns nothing if no arguments', function() {
                 expect(get()).to.deep.eq([]);
             });
-            it('test a single argument', function() {
+            it('test single argument', function() {
                 expect(get('test')).to.eq('test');
+            });
+            it('test single argument with argument underscores', function() {
+                expect(get('_test_')).to.eq('test');
+            });
+            it(
+                'test single argument with argument double underscores',
+                function() {
+                    expect(get('__test__')).to.eq('test');
+                }
+            );
+            it('test single argument with spaces', function() {
+                expect(get(' te st ')).to.eq('test');
             });
             it('test argument not found', function() {
                 expect(
@@ -92,7 +105,10 @@ describe('$Injector', function() {
             it('test no registrar with single argument underscores', function() {
                 expect(get('_te_st_')).to.eq('te_st');
             });
-            it('test no registrar with single argument underscores', function() {
+            it('test no registrar with double argument underscores', function() {
+                expect(get('__te_st__')).to.eq('te_st');
+            });
+            it('test no registrar with spaces', function() {
                 expect(get(' te st ')).to.eq('test');
             });
             it('test argument not found', function() {
