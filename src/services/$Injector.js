@@ -132,7 +132,9 @@ function $$arguments(fn = () => false) {
 
             // We need to pose this string in this fashion because arrow
             // function params may not be wrapped in parens
-            args = str.match(/function.*\(.*?\)|\(?.*?\)?\s+?\=\>/g);
+            args = str.match(
+                /function([^\)\(]+)?\(([^\)\(]+)?\)|\(?([^\)\(]+)?\)?\s+?\=\>/g
+            );
 
         if (args && args.length) {
 
