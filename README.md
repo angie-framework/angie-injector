@@ -2,13 +2,13 @@
 
 ## Angie Injector
 
-[![npm version](https://badge.fury.io/js/angie-injector.svg)](http://badge.fury.io/js/angie-injector)
+[![npm version](https://badge.fury.io/js/angie-injector.svg)](http://badge.fury.io/js/angie-injector "npm version")
 ![iojs support](https://img.shields.io/badge/iojs-1.7.1+-brightgreen.svg "iojs support")
 ![node support](https://img.shields.io/badge/node-0.12.0+-brightgreen.svg "node support")
 ![npm downloads](https://img.shields.io/npm/dm/angie-injector.svg "npm downloads")
 ![build status](https://travis-ci.org/benderTheCrime/angie-injector.svg?branch=master "build status")
 ![code coverage](https://rawgit.com/angie-framework/angie-injector/master/svg/coverage.svg "code coverage")
-![documentation](https://doc.esdoc.org/github.com/angie-framework/angie-injector/badge.svg "documentation")
+[![documentation](https://doc.esdoc.org/github.com/angie-framework/angie-injector/badge.svg)](https://doc.esdoc.org/github.com/angie-framework/angie-injector/ "documentation")
 
 [![NPM](https://nodei.co/npm/angie-injector.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/angie-injector/)
 
@@ -52,6 +52,9 @@ class Test {
 ```
 
 For a list of Frequently Asked Questions, please see the [FAQ](https://github.com/angie-framework/angie-injector/blob/master/FAQ.md "FAQ") and the [CHANGELOG](https://github.com/angie-framework/angie-injector/blob/master/CHANGELOG.md "CHANGELOG") for an up to date list of changes. Contributors to this Project are outlined in the [CONTRIBUTORS](https://github.com/angie-framework/angie-injector/blob/master/CONTRIBUTORS.md "CONTRIBUTORS") file.
+
+## Documentation
+Angie Injector documentation can be found [here](https://doc.esdoc.org/github.com/angie-framework/angie/ "documentation").
 
 ### Angie
 Please see the [site](http://benderthecrime.github.io/angie/) for information about the project, a quickstart guide, and documentation and the [CHANGELOG](https://github.com/benderTheCrime/angie/blob/master/CHANGELOG.md) for an up to date list of changes.
