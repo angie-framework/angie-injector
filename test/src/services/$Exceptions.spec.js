@@ -7,8 +7,8 @@ import { cyan } from            'chalk';
 import $LogProvider from        'angie-log';
 
 // Angie Injector Modules
-// Use require to resolve import string literal limitations
-const $Exceptions =             require(`../../../${global.TEST_ENV}/services/$Exceptions`);
+const TEST_ENV =                global.TEST_ENV || 'src',
+    $Exceptions =               require(`../../../${TEST_ENV}/services/$Exceptions`);
 
 describe('$Exceptions', function() {
     const noop = () => false;

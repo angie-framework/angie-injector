@@ -22,6 +22,8 @@ class $Injector {
      * @desc Responsible for routing of dependencies
      * @param {object|string} The name or array of names of providers to fetch
      * @returns {object|string|number|Array<>|boolean} The provider value
+     * @todo Replace `Array.prototype.slice.call` with `Array.from` when it is
+     * supported without the polyfill
      * @since 0.0.1
      * @access public
      * @example $Injector.get('$scope'); // = { $id: 1 }
@@ -38,7 +40,7 @@ class $Injector {
         let registrar,
             providers = [],
             args = arguments[0] instanceof Array ?
-                arguments[0] : Array.from(arguments),
+                arguments[0] : Array.prototype.slice.call(arguments),
             type = arguments[0] instanceof Array && arguments[1] ?
                 arguments[1] : null;
 
@@ -51,8 +53,8 @@ class $Injector {
             let provider;
 
             // Doing this for safety reasons...if the arg didn't come from IB,
-            // it potentially has unsafe spaces, underscores
-            arg = arg.toString().replace(/(^(_)|[\s]|(_)$)/g, '');
+            // it potentially has unsafe spaces and underscores
+            arg = arg.toString().replace(/^(_){0,2}|(_){0,2}$|\s/g, '').trim();
 
             // Rename convention for the $scope service
             if (arg === 'scope') {
@@ -110,7 +112,7 @@ class $Injector {
  */
 function $injectionBinder(fn, type) {
     const args = $$arguments(fn),
-        providers = $Injector.get.apply(global.app, args, type) || [];
+        providers = $Injector.get.apply(global.app, [ args, type ]);
     return providers instanceof Array ? fn.bind(null, ...providers) : providers ?
         fn.bind(null, providers) : fn.bind(null);
 }
@@ -127,21 +129,21 @@ function $injectionBinder(fn, type) {
 function $$arguments(fn = () => false) {
     if (typeof fn === 'function') {
         let str = fn.toString(),
-            args = str.match(/(function.*)?\(.*\)(\s+\=\>)?/g);
 
-        if (args && args.length) {
-            args = args.map((v) => v.replace(/[_\s]/g, ''));
-
-            // TODO this is probably one of the worst RegExps ever written. It is
-            // intended to match:
-            // Anonymous functions
-            // Named functions
-            // Arrow functions
-            // Closing brackets
-            let argStr = args[0].replace(
-                /(\(|function(\s+)?([^\)\(]+)?(\s+)?\(|\)(\s+)?(=>)?(\s+)?)/g, ''
+            // We need to pose this string in this fashion because arrow
+            // function params may not be wrapped in parens
+            args = str.match(
+                /function([^\)\(]+)?\(([^\)\(]+)?\)|\(?([^\)\(]+)?\)?\s+?\=\>/g
             );
 
+        if (args && args.length) {
+
+            // Replace all of the "function" characters
+            let argStr = args.map(
+                v => v.replace(/(function.*)\(|[\s\=\>\)\(]/g, '')
+            )[0];
+
+            // Split our argument string and pass it back to the injector
             if (argStr.length) {
                 return argStr.split(',').map((v) => v.trim());
             }

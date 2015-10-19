@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+#### [0.10.3] - 2015-10-19
+##### Fixed
+- Fixed an issue preventing multiple trailing and leading underscores from being removed from the injected provider name
+- Added WallabyJS configuration
+
 #### [0.10.2] - 2015-09-29
 ##### Changed
 - Modified README
