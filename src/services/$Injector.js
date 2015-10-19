@@ -123,28 +123,25 @@ function $injectionBinder(fn, type) {
  * `Function.prototype.toString`
  * @param {function} fn The function to which values are being provided
  * @returns {function} Bound function
- * @todo Fix functional argument parsing RegExp
  * @since 0.9.15
  * @access private
  */
 function $$arguments(fn = () => false) {
     if (typeof fn === 'function') {
         let str = fn.toString(),
-            args = str.match(/(function.*)?\(.*\)(\s+\=\>)?/g);
+
+            // We need to pose this string in this fashion because arrow
+            // function params may not be wrapped in parens
+            args = str.match(/function.*\(.*?\)|\(?.*?\)?\s+?\=\>/g);
 
         if (args && args.length) {
-            args = args.map((v) => v.replace(/[_\s]/g, ''));
 
-            // TODO this is probably one of the worst RegExps ever written. It is
-            // intended to match:
-            // Anonymous functions
-            // Named functions
-            // Arrow functions
-            // Closing brackets
-            let argStr = args[0].replace(
-                /(\(|function(\s+)?([^\)\(]+)?(\s+)?\(|\)(\s+)?(=>)?(\s+)?)/g, ''
-            );
+            // Replace all of the "function" characters
+            let argStr = args.map(
+                v => v.replace(/(function.*)\(|[\s\=\>\)\(]/g, '')
+            )[0];
 
+            // Split our argument string and pass it back to the injector
             if (argStr.length) {
                 return argStr.split(',').map((v) => v.trim());
             }
