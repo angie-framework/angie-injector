@@ -56,10 +56,7 @@ class $Injector {
 
                     // These are session controlled and we need to make sure
                     // we pull out the right one
-
-                    console.log(arg, 'SRG');
-
-                    if (arg === '$scope') {
+                    if ([ '$scope', '$request', '$response' ].includes(arg)) {
                         provider = provider();
                     }
 
