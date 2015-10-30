@@ -7,8 +7,6 @@
 // Project Modules
 import * as $Exceptions from    './$Exceptions';
 
-let $$injectorRoot;
-
 /**
  * @desc Handles dependency injection, will return one or many arguments passed
  * as a string or an array.
@@ -29,39 +27,23 @@ class $Injector {
      * @example $Injector.get('$scope'); // = { $id: 1 }
      */
     static get() {
-
-        // Declare the root from which dependencies are provided and check keys
-        $$injectorRoot = $$injectorRoot || global.app || {};
-
-        if (!Object.keys($$injectorRoot).length) {
-            throw new $Exceptions.$$ProviderDomainError();
-        }
-
-        let registrar,
+        let registrar = global.app.$$registry,
             providers = [],
-            args = arguments[0] instanceof Array ?
-                arguments[0] : Array.prototype.slice.call(arguments),
-            type = arguments[0] instanceof Array && arguments[1] ?
-                arguments[1] : null;
+            args = arguments[ 0 ] instanceof Array ?
+                arguments[ 0 ] : Array.prototype.slice.call(arguments),
+            type = arguments[ 0 ] instanceof Array && arguments[ 1 ] ?
+                arguments[ 1 ] : null;
 
-        // Check to see if a registrar exists
-        if (typeof $$injectorRoot.$$registry === 'object') {
-            registrar = $$injectorRoot.$$registry;
-        }
-
-        args.forEach(function(arg) {
+        for (let arg of args) {
             let provider;
 
             // Doing this for safety reasons...if the arg didn't come from IB,
             // it potentially has unsafe spaces and underscores
             arg = arg.toString().replace(/^(_){0,2}|(_){0,2}$|\s/g, '').trim();
 
-            // Rename convention for the $scope service
-            if (arg === 'scope') {
-                arg = '$scope';
-            } else if (
+            if (
                 registrar && registrar[ arg ] === 'Model' &&
-                type && type === 'directive'
+                type === 'directive'
             ) {
                 throw new $Exceptions.$$ProviderTypeError();
             }
@@ -69,36 +51,35 @@ class $Injector {
             // Try to find the provider in the registrar or the declared object
             // else return;
             try {
-                provider = registrar ?
-                    $$injectorRoot[ registrar[ arg ] ][ arg ] :
-                    $$injectorRoot[ arg ];
+                provider = global.app[ registrar[ arg ] ][ arg ];
                 if (provider) {
+
+                    // These are session controlled and we need to make sure
+                    // we pull out the right one
+
+                    console.log(arg, 'SRG');
+
+                    if (arg === '$scope') {
+                        provider = provider();
+                    }
+
                     providers.push(provider);
-                    return;
+                    continue;
                 }
                 throw new Error();
             }
             catch(e) {
 
+                console.log(e);
+
                 // If no provider could be found, there is a big problem
                 throw new $Exceptions.$$ProviderNotFoundError(arg);
             }
-        });
-        return providers.length > 1 ? providers : providers[0] ? providers[0] : [];
-    }
+        }
 
-    /**
-     * @desc Specifies the root object from which dependencies are fetched
-     * @param {object} r [param={}] The object from which dependencies are
-     * fetched
-     * @returns {object} The root object vaule
-     * @since 0.0.1
-     * @access public
-     * @example $Injector.$specifyInjectorRoot({});
-     */
-    static $specifyInjectorRoot(r = {}) {
-        $$injectorRoot = r;
-        return r;
+        return providers.length > 1 ?
+            providers : providers[ 0 ] ?
+                providers[ 0 ] : [];
     }
 }
 
