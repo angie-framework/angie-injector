@@ -4,6 +4,9 @@
  * @date 8/23/2015
  */
 
+// System Modules
+import $CacheFactory from       'angie/dist/factories/$CacheFactory';
+
 // Project Modules
 import * as $Exceptions from    './$Exceptions';
 
@@ -31,8 +34,9 @@ class $Injector {
             providers = [],
             args = arguments[ 0 ] instanceof Array ?
                 arguments[ 0 ] : Array.prototype.slice.call(arguments),
-            type = arguments[ 0 ] instanceof Array && arguments[ 1 ] ?
-                arguments[ 1 ] : null;
+            scoping = arguments[ 0 ] instanceof Array && arguments[ 1 ] ?
+                arguments[ 1 ] : typeof args.slice(-1)[ 0 ] === 'object' ?
+                    args.slice(-1)[ 0 ] : {};
 
         for (let arg of args) {
             let provider;
@@ -43,7 +47,7 @@ class $Injector {
 
             if (
                 registrar && registrar[ arg ] === 'Model' &&
-                type === 'directive'
+                scoping.type && scoping.type === 'directive'
             ) {
                 throw new $Exceptions.$$ProviderTypeError();
             }
@@ -52,12 +56,20 @@ class $Injector {
             // else return;
             try {
                 provider = global.app[ registrar[ arg ] ][ arg ];
-                if (provider) {
+                if (!provider) {
 
                     // These are session controlled and we need to make sure
                     // we pull out the right one
-                    if ([ '$scope', '$request', '$response' ].includes(arg)) {
-                        provider = provider();
+                    if (
+                        arg === '$scope' &&
+                        /controller|directive/.test(scoping.type)
+                    ) {
+                        provider = new $CacheFactory(`${arg}s`).get(scoping[ arg ].$$iid);
+                    } else if (
+                        /\$(request|response)/.test(arg) &&
+                        scoping.type === 'controller'
+                    ) {
+                        provider = new $CacheFactory(`${arg}s`).get(scoping[ arg ].$$iid);
                     }
 
                     providers.push(provider);
@@ -88,9 +100,9 @@ class $Injector {
  * @since 0.0.1
  * @access public
  */
-function $injectionBinder(fn, type) {
+function $injectionBinder(fn, scoping) {
     const args = $$arguments(fn),
-        providers = $Injector.get.apply(global.app, [ args, type ]);
+        providers = $Injector.get.apply(global.app, [ args, scoping ]);
     return providers instanceof Array ? fn.bind(null, ...providers) : providers ?
         fn.bind(null, providers) : fn.bind(null);
 }
