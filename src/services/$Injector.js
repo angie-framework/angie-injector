@@ -4,9 +4,6 @@
  * @date 8/23/2015
  */
 
-// System Modules
-import $CacheFactory from       'angie/dist/factories/$CacheFactory';
-
 // Project Modules
 import * as $Exceptions from    './$Exceptions';
 
@@ -57,6 +54,7 @@ class $Injector {
             try {
                 provider = global.app[ registrar[ arg ] ][ arg ];
                 if (!provider) {
+                    console.log('NO PROVIDER', scoping);
 
                     // These are session controlled and we need to make sure
                     // we pull out the right one
@@ -64,12 +62,12 @@ class $Injector {
                         arg === '$scope' &&
                         /controller|directive/.test(scoping.type)
                     ) {
-                        provider = new $CacheFactory(`${arg}s`).get(scoping[ arg ].$$iid);
+                        provider = new app.$services.$Cache(`${arg}s`).get(scoping[ arg ].$$iid);
                     } else if (
                         /\$(request|response)/.test(arg) &&
                         scoping.type === 'controller'
                     ) {
-                        provider = new $CacheFactory(`${arg}s`).get(scoping[ arg ].$$iid);
+                        provider = new app.$services.$Cache(`${arg}s`).get(scoping[ arg ].$$iid);
                     }
 
                     providers.push(provider);
