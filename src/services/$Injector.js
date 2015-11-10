@@ -35,6 +35,8 @@ class $Injector {
                 arguments[ 1 ] : typeof args.slice(-1)[ 0 ] === 'object' ?
                     args.slice(-1)[ 0 ] : {};
 
+        console.log('ARGS', args);
+
         for (let arg of args) {
             let provider;
 
@@ -51,8 +53,8 @@ class $Injector {
 
             // Try to find the provider in the registrar or the declared object
             // else return;
-            try {
-                provider = global.app[ registrar[ arg ] ][ arg ];
+            // try {
+                provider = app[ registrar[ arg ] ][ arg ];
                 if (!provider) {
                     console.log('NO PROVIDER', scoping);
 
@@ -70,18 +72,22 @@ class $Injector {
                         provider = new app.$services.$Cache(`${arg}s`).get(scoping[ arg ].$$iid);
                     }
 
-                    providers.push(provider);
-                    continue;
-                }
-                throw new Error();
-            }
-            catch(e) {
 
-                console.log(e);
+                }
+
+                if (provider) {
+                    providers.push(provider);
+                } else {
+                    throw new $Exceptions.$$ProviderNotFoundError(arg);
+                }
+            // }
+            // catch(e) {
+
+                // throw e;
 
                 // If no provider could be found, there is a big problem
-                throw new $Exceptions.$$ProviderNotFoundError(arg);
-            }
+                // throw new $Exceptions.$$ProviderNotFoundError(arg);
+            // }
         }
 
         return providers.length > 1 ?
