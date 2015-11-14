@@ -31,14 +31,24 @@ class $Injector {
             providers = [],
             args = arguments[ 0 ] instanceof Array ?
                 arguments[ 0 ] : Array.prototype.slice.call(arguments),
-            scoping = arguments[ 0 ] instanceof Array && arguments[ 1 ] ?
-                arguments[ 1 ] : typeof args.slice(-1)[ 0 ] === 'object' ?
-                    args.slice(-1)[ 0 ] : {};
+            scoping = arguments[ 0 ] instanceof Array &&
+                typeof arguments[ 1 ] === 'object' ?
+                    arguments[ 1 ] : typeof args.slice(-1)[ 0 ] === 'object' ?
+                        args.slice(-1)[ 0 ] : {};
 
         console.log('ARGS', args);
 
+        if (Object.keys(scoping).length) {
+            args.pop();
+        }
+
         for (let arg of args) {
             let provider;
+
+            if (arg !== 'string') {
+                continue;
+            }
+
 
             // Doing this for safety reasons...if the arg didn't come from IB,
             // it potentially has unsafe spaces and underscores
@@ -52,43 +62,37 @@ class $Injector {
             }
 
             // Try to find the provider in the registrar or the declared object
-            // else return;
-            // try {
+            try {
                 provider = app[ registrar[ arg ] ][ arg ];
-                if (!provider) {
-                    console.log('NO PROVIDER', scoping);
+            } catch(e) {
 
-                    // These are session controlled and we need to make sure
-                    // we pull out the right one
-                    if (
-                        arg === '$scope' &&
-                        /controller|directive/.test(scoping.type)
-                    ) {
-                        provider = new app.$services.$Cache(`${arg}s`).get(scoping[ arg ].$$iid);
-                    } else if (
-                        /\$(request|response)/.test(arg) &&
-                        scoping.type === 'controller'
-                    ) {
-                        provider = new app.$services.$Cache(`${arg}s`).get(scoping[ arg ].$$iid);
-                    }
+                console.log('IM IN THIS BLOCK');
 
-
+                // These are session controlled and we need to make sure
+                // we pull out the right one
+                if (
+                    arg === '$scope' &&
+                    /controller|directive/.test(scoping.type)
+                ) {
+                    provider = scoping[ arg ].val;
+                } else if (
+                    /\$(request|response)/.test(arg) &&
+                    scoping.type === 'controller'
+                ) {
+                    provider = scoping[ arg ].val;
                 }
+            }
 
-                if (provider) {
-                    providers.push(provider);
-                } else {
-                    throw new $Exceptions.$$ProviderNotFoundError(arg);
-                }
-            // }
-            // catch(e) {
+            console.log(arg, provider);
 
-                // throw e;
-
-                // If no provider could be found, there is a big problem
-                // throw new $Exceptions.$$ProviderNotFoundError(arg);
-            // }
+            if (provider) {
+                providers.push(provider);
+            } else {
+                throw new $Exceptions.$$ProviderNotFoundError(arg);
+            }
         }
+
+        console.log('Providers', providers);
 
         return providers.length > 1 ?
             providers : providers[ 0 ] ?
