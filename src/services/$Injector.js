@@ -36,8 +36,6 @@ class $Injector {
                     arguments[ 1 ] : typeof args.slice(-1)[ 0 ] === 'object' ?
                         args.slice(-1)[ 0 ] : {};
 
-        console.log('ARGS', args);
-
         if (Object.keys(scoping).length) {
             args.pop();
         }
@@ -45,7 +43,7 @@ class $Injector {
         for (let arg of args) {
             let provider;
 
-            if (arg !== 'string') {
+            if (typeof arg !== 'string') {
                 continue;
             }
 
@@ -53,7 +51,6 @@ class $Injector {
             // Doing this for safety reasons...if the arg didn't come from IB,
             // it potentially has unsafe spaces and underscores
             arg = arg.toString().replace(/^(_){0,2}|(_){0,2}$|\s/g, '').trim();
-
             if (
                 registrar && registrar[ arg ] === 'Model' &&
                 scoping.type && scoping.type === 'directive'
@@ -66,8 +63,6 @@ class $Injector {
                 provider = app[ registrar[ arg ] ][ arg ];
             } catch(e) {
 
-                console.log('IM IN THIS BLOCK');
-
                 // These are session controlled and we need to make sure
                 // we pull out the right one
                 if (
@@ -77,13 +72,11 @@ class $Injector {
                     provider = scoping[ arg ].val;
                 } else if (
                     /\$(request|response)/.test(arg) &&
-                    scoping.type === 'controller'
+                    scoping.type === 'Controller'
                 ) {
                     provider = scoping[ arg ].val;
                 }
             }
-
-            console.log(arg, provider);
 
             if (provider) {
                 providers.push(provider);
@@ -91,8 +84,6 @@ class $Injector {
                 throw new $Exceptions.$$ProviderNotFoundError(arg);
             }
         }
-
-        console.log('Providers', providers);
 
         return providers.length > 1 ?
             providers : providers[ 0 ] ?
