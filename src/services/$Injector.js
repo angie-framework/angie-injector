@@ -29,14 +29,16 @@ class $Injector {
     static get() {
         let registrar = global.app.$$registry,
             providers = [],
-            args = arguments[ 0 ] instanceof Array ?
-                arguments[ 0 ] : Array.prototype.slice.call(arguments),
-            scoping = arguments[ 0 ] instanceof Array &&
+            firstArgumentIsArr = arguments[ 0 ] instanceof Array,
+            args = Array.prototype.slice.call(
+                firstArgumentIsArr ? arguments[ 0 ] : arguments
+            ),
+            scoping = firstArgumentIsArr &&
                 typeof arguments[ 1 ] === 'object' ?
                     arguments[ 1 ] : typeof args.slice(-1)[ 0 ] === 'object' ?
                         args.slice(-1)[ 0 ] : {};
 
-        if (Object.keys(scoping).length) {
+        if (Object.keys(scoping).length && !firstArgumentIsArr) {
             args.pop();
         }
 
@@ -85,9 +87,8 @@ class $Injector {
             }
         }
 
-        return providers.length > 1 ?
-            providers : providers[ 0 ] ?
-                providers[ 0 ] : [];
+        return providers.length > 1 ? providers : providers[ 0 ] ?
+            providers[ 0 ] : [];
     }
 }
 
@@ -101,9 +102,10 @@ class $Injector {
  */
 function $injectionBinder(fn, scoping) {
     const args = $$arguments(fn),
-        providers = $Injector.get.apply(global.app, [ args, scoping ]);
-    return providers instanceof Array ? fn.bind(null, ...providers) : providers ?
-        fn.bind(null, providers) : fn.bind(null);
+        providers = $Injector.get(args, scoping);
+    return providers instanceof Array ?
+        fn.bind(null, ...providers) : providers ?
+            fn.bind(null, providers) : fn.bind(null);
 }
 
 
@@ -134,7 +136,7 @@ function $$arguments(fn = () => false) {
 
             // Split our argument string and pass it back to the injector
             if (argStr.length) {
-                return argStr.split(',').map((v) => v.trim());
+                return argStr.split(',').map(v => v.trim());
             }
         }
     }
