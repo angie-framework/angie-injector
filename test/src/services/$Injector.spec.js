@@ -4,7 +4,7 @@ import { expect } from          'chai';
 // Angie Injector Modules
 // Use require to resolve import string literal limitations
 const TEST_ENV =                global.TEST_ENV || 'src',
-    $InjectorProvider =         require(`../../../${TEST_ENV}/services/$Injector`),
+    $InjectorProvider =         require(`../../../${TEST_ENV}/services/injector`),
     $Injector =                 $InjectorProvider.default,
     $injectionBinder =          $InjectorProvider.$injectionBinder,
     $$arguments =               $InjectorProvider.$$arguments;

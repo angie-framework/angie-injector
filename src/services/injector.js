@@ -1,11 +1,11 @@
 /**
- * @module $Injector.js
+ * @module injector.js
  * @author Joe Groseclose <@benderTheCrime>
  * @date 8/23/2015
  */
 
 // Project Modules
-import * as $Exceptions from    './$Exceptions';
+import * as $Exceptions from    './exceptions';
 
 /**
  * @desc Handles dependency injection, will return one or many arguments passed

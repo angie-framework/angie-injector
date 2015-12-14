@@ -4,7 +4,7 @@
  * @date 8/23/2015
  */
 
-import {$injectionBinder} from   '../services/$InjectorProvider';
+import { $injectionBinder } from   '../services/injector';
 
 /* istanbul ignore next */
 const injector = (i, e, obj) => $injectionBinder(obj.value).call(obj.value);

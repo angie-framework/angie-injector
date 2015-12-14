@@ -4,7 +4,7 @@
   "authors": "Joe Groseclose <@benderTheCrime>",
   "description": "Standalone Dependency Injector for ES6 Modules Designed for the Angie Framework",
   "license": "MIT",
-  "main": "dist/services/$Injector.js",
+  "main": "dist/services/injector.js",
   "private": false,
   "preferGlobal": true,
   "scripts": {

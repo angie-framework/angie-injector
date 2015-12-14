@@ -1,18 +1,18 @@
 // System Modules
 import fs from                  'fs';
 import gulp from                'gulp';
-import {argv} from              'yargs';
+import { argv } from            'yargs';
 import eslint from              'gulp-eslint';
 import jscs from                'gulp-jscs';
 import istanbul from            'gulp-istanbul';
-import {Instrumenter} from      'isparta';
+import { Instrumenter } from    'isparta';
 import mocha from               'gulp-mocha';
 import cobertura from           'istanbul-cobertura-badger';
 import esdoc from               'gulp-esdoc';
 import babel from               'gulp-babel';
-import {bold, red} from         'chalk';
+import { bold, red } from       'chalk';
 
-const bread = (str) => bold(red(str));
+const bread = str => bold(red(str));
 
 const SRC_DIR = './src',
     SRC = `${SRC_DIR}/**/*.js`,
