@@ -4,6 +4,9 @@
  * @date 12/13/2015
  */
 
+// System Modules
+import $LogProvider from    'angie-log';
+
 /**
  * @desc Handles Errors for provider type restrictions
  * @since 0.0.1

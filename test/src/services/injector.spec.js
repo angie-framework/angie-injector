@@ -10,129 +10,64 @@ const TEST_ENV =                global.TEST_ENV || 'src',
     $$arguments =               $InjectorProvider.$$arguments;
 
 describe('$Injector', function() {
-    let set = $Injector.$specifyInjectorRoot;
+    const SET = obj => global.app = obj;
 
-    afterEach(() => { set(); });
+    afterEach(() => { SET(); });
     describe('get', function() {
         let get = $Injector.get;
 
-        it('test no dependencies to provide', function() {
-            set();
-            expect(
-                get.bind(null, 'test')
-            ).to.throw(ReferenceError);
-        });
-        describe('registrar', function() {
-            beforeEach(function() {
-                set({
-                    constants: {
-                        test: 'test',
-                        test1: 'test',
-                        $scope: 'test'
-                    },
-                    $$registry: {
-                        test: 'constants',
-                        test1: 'constants',
-                        $scope: 'constants',
-                        test4: 'Model',
-                        test5: 'directive'
-                    }
-                });
-            });
-            it('test get returns nothing if no arguments', function() {
-                expect(get()).to.deep.eq([]);
-            });
-            it('test single argument', function() {
-                expect(get('test')).to.eq('test');
-            });
-            it('test single argument with argument underscores', function() {
-                expect(get('_test_')).to.eq('test');
-            });
-            it(
-                'test single argument with argument double underscores',
-                function() {
-                    expect(get('__test__')).to.eq('test');
-                }
-            );
-            it('test single argument with spaces', function() {
-                expect(get(' te st ')).to.eq('test');
-            });
-            it('test argument not found', function() {
-                expect(
-                    get.bind(null, 'test', 'test1', 'test2')
-                ).to.throw(RangeError);
-            });
-            it('test all arguments found', function() {
-                set({
-                    constants: {
-                        test: 'test',
-                        test1: 'test',
-                        test3: 'test'
-                    },
-                    $$registry: {
-                        test: 'constants',
-                        test1: 'constants',
-                        test3: 'constants'
-                    }
-                });
-                expect(
-                    get('test', 'test1', 'test3')
-                ).to.deep.eq([ 'test', 'test', 'test' ]);
-            });
-            it('test directive requests Model injection', function() {
-                expect(
-                    get.bind(null, [ 'test4' ], 'directive')
-                ).to.throw(TypeError);
-            });
-        });
-        describe('test no registrar', function() {
-            beforeEach(function() {
-
-                /* eslint-disable */
-                set({
+        beforeEach(function() {
+            SET({
+                constants: {
                     test: 'test',
-                    test2: 'test2',
-                    te_st: 'te_st'
-                });
-                /* eslint-enable */
-            });
-            it('test get returns nothing if no arguments', function() {
-                expect(get()).to.deep.eq([]);
-            });
-            it('test no registrar with single argument', function() {
-                expect(get('test')).to.eq('test');
-            });
-            it('test no registrar with single argument underscores', function() {
-                expect(get('_te_st_')).to.eq('te_st');
-            });
-            it('test no registrar with double argument underscores', function() {
-                expect(get('__te_st__')).to.eq('te_st');
-            });
-            it('test no registrar with spaces', function() {
-                expect(get(' te st ')).to.eq('test');
-            });
-            it('test argument not found', function() {
-                expect(
-                    get.bind(null, 'test', 'test1', 'test2')
-                ).to.throw(RangeError);
-            });
-            it('test no registrar with many arguments', function() {
-                expect(
-                    get('test', 'test2')
-                ).to.deep.eq([ 'test', 'test2' ]);
+                    test1: 'test',
+                    test3: 'test',
+                    $scope: 'test'
+                },
+                $$registry: {
+                    test: 'constants',
+                    test1: 'constants',
+                    test3: 'constants',
+                    $scope: 'constants',
+                    test4: 'Model'
+                }
             });
         });
-        it('test scope resolves to $scope', function() {
-            set({ $scope: 'test' });
-            expect(get('scope')).to.eq('test');
+        it('test get returns nothing if no arguments', function() {
+            expect(get()).to.deep.eq([]);
         });
-    });
-    describe('$specifyInjectorRoot', function() {
-        it('test with a value', function() {
-            expect(set({ test: 'test' })).to.deep.eq({ test: 'test' });
+        it('test single, non-string first argument', function() {
+            expect(get({})).to.deep.eq([]);
         });
-        it('test without a value', function() {
-            expect(set()).to.deep.eq({});
+        it('test single argument', function() {
+            expect(get('test')).to.eq('test');
+        });
+        it('test single argument with argument underscores', function() {
+            expect(get('_test_')).to.eq('test');
+        });
+        it(
+            'test single argument with argument double underscores',
+            function() {
+                expect(get('__test__')).to.eq('test');
+            }
+        );
+        it('test single argument with spaces', function() {
+            expect(get(' te st ')).to.eq('test');
+        });
+        it('test argument not found', function() {
+            expect(
+                get.bind(null, 'test', 'test1', 'test2')
+            ).to.throw(RangeError);
+        });
+        it('test all arguments found', function() {
+            expect(
+                get('test', 'test1', 'test3')
+            ).to.deep.eq([ 'test', 'test', 'test' ]);
+        });
+        it('test directive requests Model injection', function() {
+            expect(
+                get.bind(null, [ 'test4' ], { type: 'directive' })
+            ).to.throw(TypeError);
         });
     });
     describe('$injectionBinder', function() {
@@ -143,7 +78,7 @@ describe('$Injector', function() {
             };
 
         beforeEach(function() {
-            set({
+            SET({
                 constants: {
                     test: 'test',
                     test1: 'test1'
@@ -155,7 +90,7 @@ describe('$Injector', function() {
             });
         });
         afterEach(function() {
-            set();
+            SET();
             args = undefined;
         });
         describe('test anonymous function', function() {
