@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - 2015-11-01
 ### Changed
 - Made the package specific to Angie Framework applications
+- Updated the structure of the injector `$Exceptions` utilities
 
 #### [0.10.3] - 2015-10-19
 ##### Fixed
