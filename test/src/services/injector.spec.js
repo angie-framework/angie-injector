@@ -10,14 +10,14 @@ const TEST_ENV =                global.TEST_ENV || 'src',
     $$arguments =               $InjectorProvider.$$arguments;
 
 describe('$Injector', function() {
-    const SET = obj => global.app = obj;
+    const SET_REGISTRY = obj => global.app = obj;
 
-    afterEach(() => { SET(); });
+    afterEach(() => { SET_REGISTRY(); });
     describe('get', function() {
         let get = $Injector.get;
 
         beforeEach(function() {
-            SET({
+            SET_REGISTRY({
                 constants: {
                     test: 'test',
                     test1: 'test',
@@ -78,7 +78,7 @@ describe('$Injector', function() {
             };
 
         beforeEach(function() {
-            SET({
+            SET_REGISTRY({
                 constants: {
                     test: 'test',
                     test1: 'test1'
@@ -90,7 +90,7 @@ describe('$Injector', function() {
             });
         });
         afterEach(function() {
-            SET();
+            SET_REGISTRY();
             args = undefined;
         });
         describe('test anonymous function', function() {
@@ -205,7 +205,7 @@ describe('$Injector', function() {
 
             /* eslint-disable */
             it('one argument', function() {
-                expect($$arguments((test) => true)).to.deep.eq([ 'test' ]);
+                expect($$arguments(test => true)).to.deep.eq([ 'test' ]);
             });
             it('many arguments', function() {
                 expect(
