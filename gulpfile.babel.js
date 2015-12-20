@@ -1,15 +1,23 @@
+import { default as register } from     'babel-core/register';
+register({
+    only: [
+        '**/node_modules/angie*/**',
+        '**/{src,test}/**'
+    ],
+    stage: 0
+});
+
 // System Modules
-import fs from                  'fs';
-import gulp from                'gulp';
-import { argv } from            'yargs';
-import eslint from              'gulp-eslint';
-import jscs from                'gulp-jscs';
-import istanbul from            'gulp-istanbul';
-import { Instrumenter } from    'isparta';
-import mocha from               'gulp-mocha';
-import esdoc from               'gulp-esdoc';
-import babel from               'gulp-babel';
-import { bold, red } from       'chalk';
+import fs from                          'fs';
+import gulp from                        'gulp';
+import { argv } from                    'yargs';
+import eslint from                      'gulp-eslint';
+import istanbul from                    'gulp-istanbul';
+import { Instrumenter } from            'isparta';
+import mocha from                       'gulp-mocha';
+import esdoc from                       'gulp-esdoc';
+import babel from                       'gulp-babel';
+import { bold, red } from               'chalk';
 
 const bread = str => bold(red(str));
 
@@ -17,25 +25,17 @@ const SRC_DIR = './src',
     SRC = `${SRC_DIR}/**/*.js`,
     TRANSPILED_SRC_DIR = './dist',
     TRANSPILED_SRC = `${TRANSPILED_SRC_DIR}/**/*.js`,
-    TEST_SRC = './test/src/**/*.spec.js',
+    TEST_SRC = './test/src/**/*!(decorators).spec.js',
     TRANSPILED_TEST_SRC = './test/dist/**/*.spec.js',
     DOC_SRC = './doc',
     COVERAGE_SRC = './coverage';
 
 gulp.task('eslint', function () {
-    gulp.src([ SRC, TEST_SRC ]).pipe(eslint().on('error', function(e) {
-        throw e;
-    }));
+    gulp.src([ SRC, TEST_SRC ]).pipe(eslint({
+        useEslintrc: true
+    })).pipe(eslint.format()).pipe(eslint.failAfterError());
 });
-gulp.task('jscs', [ 'eslint' ], function () {
-    return gulp.src([ SRC, TEST_SRC ])
-        .pipe(jscs({
-            fix: true,
-            configPath: '.jscsrc',
-            esnext: true
-        }));
-});
-gulp.task('istanbul:src', [ 'jscs' ], istanbulHandler.bind(null, SRC));
+gulp.task('istanbul:src', [ 'eslint' ], istanbulHandler.bind(null, SRC));
 gulp.task('istanbul:dist', [ 'babel' ], istanbulHandler.bind(null, TRANSPILED_SRC));
 gulp.task(
     'mocha:src',
@@ -75,13 +75,13 @@ gulp.task('bump', function() {
         throw new Error(bold(red('No version specified!!')));
     }
 });
-gulp.task('watch', [ 'jscs', 'mocha:src' ], function() {
+gulp.task('watch', [ 'eslint', 'mocha:src' ], function() {
     gulp.watch([ SRC, TEST_SRC ], [ 'mocha:src' ]);
 });
 gulp.task('watch:babel', [ 'babel' ], function() {
     gulp.watch([ 'src/**' ], [ 'babel' ]);
 });
-gulp.task('test:src', [ 'jscs', 'mocha:src' ]);
+gulp.task('test:src', [ 'eslint', 'mocha:src' ]);
 gulp.task('test:dist', [ 'mocha:dist' ]);
 gulp.task('test', [ 'test:src' ]);
 gulp.task('default', [ 'cobertura', 'babel', 'esdoc' ]);

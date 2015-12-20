@@ -7,8 +7,10 @@ import { cyan } from            'chalk';
 import $LogProvider from        'angie-log';
 
 // Angie Injector Modules
-const TEST_ENV =                global.TEST_ENV || 'src',
-    $$ProviderNotFoundError =   require(`../../../../${TEST_ENV}/services/exceptions/provider-not-found-error`);
+const TEST_ENV = global.TEST_ENV || 'src';
+const $$ProviderNotFoundError = require(
+    `../../../../${TEST_ENV}/services/exceptions/provider-not-found-error`
+);
 
 describe('$$ProviderNotFoundError', function() {
     beforeEach(function() {
@@ -19,7 +21,7 @@ describe('$$ProviderNotFoundError', function() {
             const MSG = `Cannot find ${cyan('module')} in module registry`;
 
             expect(() => new $$ProviderNotFoundError()).to.throw(RangeError);
-            expect($LogProvider.error.calls[0].args[0]).to.eq(MSG);
+            expect($LogProvider.error.calls[ 0 ].args[ 0 ]).to.eq(MSG);
         });
         it('test module type passed', function() {
             const MSG = `Cannot find ${cyan('Controller')} in module registry`;
@@ -27,7 +29,7 @@ describe('$$ProviderNotFoundError', function() {
             expect(
                 () => new $$ProviderNotFoundError('Controller')
             ).to.throw(RangeError);
-            expect($LogProvider.error.calls[0].args[0]).to.eq(MSG);
+            expect($LogProvider.error.calls[ 0 ].args[ 0 ]).to.eq(MSG);
         });
     });
 });

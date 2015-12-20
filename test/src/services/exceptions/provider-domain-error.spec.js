@@ -6,8 +6,10 @@ import { mock } from            'simple-mock';
 import $LogProvider from        'angie-log';
 
 // Angie Injector Modules
-const TEST_ENV =                global.TEST_ENV || 'src',
-    $$ProviderDomainError =     require(`../../../../${TEST_ENV}/services/exceptions/provider-domain-error`);
+const TEST_ENV = global.TEST_ENV || 'src';
+const $$ProviderDomainError = require(
+    `../../../../${TEST_ENV}/services/exceptions/provider-domain-error`
+);
 
 describe('$$ProviderDomainError', function() {
     beforeEach(function() {
@@ -16,7 +18,7 @@ describe('$$ProviderDomainError', function() {
     it('constructor', function() {
         expect(() => new $$ProviderDomainError()).to.throw(ReferenceError);
         expect(
-            $LogProvider.error.calls[0].args[0]
+            $LogProvider.error.calls[ 0 ].args[ 0 ]
         ).to.eq('No dependencies to inject');
     });
 });
