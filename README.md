@@ -28,6 +28,8 @@ import { Controller } from 'angie/src/util/decorators';
 
 // Fetch dependencies
 const test = $Injector.get('test');
+
+// Fetch many dependencies, excusing for a moment that `test` cannot be redefined
 const [ test, test1 ] = $Injector.get('test', 'test1');
 
 // Bind arguments to a function using the injector service
