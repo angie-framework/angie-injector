@@ -16,7 +16,7 @@
 This is a very slim dependency injector for the Angie Framework. It will, based on the instantiated Angie application, inject functional dependencies into modules which have been registered via the exposed Angie application functions (including `Controller`, `directive` or `component` or `view`, `config`, and `factory`). The module itself can also be used via manual import to use the `$Injector` functionally. It also provides supported decorators for additional injection support.
 
 ## Usage
-**Note**: as of version 1.x.x, this package can no longer be used standalone, it must be used as a byproduct of the Angie application. 0.10.x versions will continue to be supported for standalone use.
+**Note**: as of version 1.0.0, this package can no longer be used standalone, it must be used as a byproduct of an [Angie](https://github.com/angie-framework/angie "Angie") application via the [Angie Framework](https://github.com/angie-framework "Angie Framework"). 0.10.x versions and below will continue to be supported for standalone use.
 
 ```bash
 npm i -g angie-injector
