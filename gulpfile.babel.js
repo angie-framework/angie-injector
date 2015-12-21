@@ -19,14 +19,14 @@ import esdoc from                       'gulp-esdoc';
 import babel from                       'gulp-babel';
 import { bold, red } from               'chalk';
 
-const SRC_DIR = './src',
-    SRC = `${SRC_DIR}/**/*.js`,
-    TRANSPILED_SRC_DIR = './dist',
-    TRANSPILED_SRC = `${TRANSPILED_SRC_DIR}/**/*.js`,
-    TEST_SRC = './test/src/**/*.spec.js',
-    TRANSPILED_TEST_SRC = './test/dist/**/*.spec.js',
-    DOC_SRC = './doc',
-    COVERAGE_SRC = './coverage';
+const SRC_DIR = './src';
+const SRC = `${SRC_DIR}/**/*.js`;
+const TRANSPILED_SRC_DIR = './dist';
+const TRANSPILED_SRC = `${TRANSPILED_SRC_DIR}/**/*.js`;
+const TEST_SRC = './test/src/**/*.spec.js';
+const TRANSPILED_TEST_SRC = './test/dist/**/*.spec.js';
+const DOC_SRC = './doc';
+const COVERAGE_SRC = './coverage';
 
 gulp.task('eslint', function () {
     return gulp.src([ SRC, TEST_SRC ]).pipe(eslint({
