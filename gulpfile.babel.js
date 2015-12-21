@@ -19,8 +19,6 @@ import esdoc from                       'gulp-esdoc';
 import babel from                       'gulp-babel';
 import { bold, red } from               'chalk';
 
-const bread = str => bold(red(str));
-
 const SRC_DIR = './src',
     SRC = `${SRC_DIR}/**/*.js`,
     TRANSPILED_SRC_DIR = './dist',
@@ -84,7 +82,7 @@ gulp.task('watch:babel', [ 'babel' ], function() {
 gulp.task('test:src', [ 'eslint', 'mocha:src' ]);
 gulp.task('test:dist', [ 'mocha:dist' ]);
 gulp.task('test', [ 'test:src' ]);
-gulp.task('default', [ 'cobertura', 'babel', 'esdoc' ]);
+gulp.task('default', [ 'test:src', 'babel', 'esdoc' ]);
 
 function istanbulHandler(src, cb) {
     gulp.src(src).pipe(istanbul({
