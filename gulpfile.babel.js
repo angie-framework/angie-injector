@@ -29,7 +29,7 @@ const SRC_DIR = './src',
     COVERAGE_SRC = './coverage';
 
 gulp.task('eslint', function () {
-    gulp.src([ SRC, TEST_SRC ]).pipe(eslint({
+    return gulp.src([ SRC, TEST_SRC ]).pipe(eslint({
         useEslintrc: true
     })).pipe(eslint.format()).pipe(eslint.failAfterError());
 });
@@ -77,7 +77,7 @@ gulp.task('watch', [ 'eslint', 'mocha:src' ], function() {
     gulp.watch([ SRC, TEST_SRC ], [ 'mocha:src' ]);
 });
 gulp.task('watch:babel', [ 'babel' ], function() {
-    gulp.watch([ 'src/**' ], [ 'babel' ]);
+    gulp.watch(SRC, [ 'babel' ]);
 });
 gulp.task('test:src', [ 'eslint', 'mocha:src' ]);
 gulp.task('test:dist', [ 'mocha:dist' ]);
