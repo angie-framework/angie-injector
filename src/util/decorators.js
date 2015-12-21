@@ -4,8 +4,16 @@
  * @date 8/23/2015
  */
 
-import {$injectionBinder} from   '../services/$InjectorProvider';
+import { $injectionBinder } from   '../services/injector';
 
-/* istanbul ignore next */
-const injector = (i, e, obj) => $injectionBinder(obj.value).call(obj.value);
-export {injector};
+const INJECTOR = (c, n, f) => {
+    if (typeof c === 'function' && typeof n === 'undefined') {
+        return $injectionBinder(c);
+    }
+
+    c[ n ] = f.value = $injectionBinder(f.value);
+};
+export {
+    INJECTOR as injector,
+    INJECTOR as inject
+};
