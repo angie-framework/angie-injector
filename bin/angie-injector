@@ -1,7 +1,7 @@
 'use strict';
 
 // TODO check to see that the most up to date version is installed
-global.ANGIE_LOG_VERSION = '0.10.3';
+global.ANGIE_LOG_VERSION = '1.0.0';
 
 require('babel/register')({ ignore: false });
-require('../src/services/$Injector');
+require('../src/services/injector');

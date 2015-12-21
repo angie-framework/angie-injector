@@ -1,13 +1,11 @@
 /**
- * @module $Injector.js
+ * @module injector.js
  * @author Joe Groseclose <@benderTheCrime>
  * @date 8/23/2015
  */
 
 // Project Modules
-import * as $Exceptions from    './$Exceptions';
-
-let $$injectorRoot;
+import * as $Exceptions from    './exceptions';
 
 /**
  * @desc Handles dependency injection, will return one or many arguments passed
@@ -29,79 +27,84 @@ class $Injector {
      * @example $Injector.get('$scope'); // = { $id: 1 }
      */
     static get() {
+        const FIRST_ARGUMENT_IS_ARRAY = arguments[ 0 ] instanceof Array;
+        const ARGS = Array.prototype.slice.call(
+            FIRST_ARGUMENT_IS_ARRAY ? arguments[ 0 ] : arguments
+        );
+        const LAST_ARGUMENT = ARGS.slice(-1)[ 0 ];
+        const REGISTRAR = global.app.$$registry;
+        let providers = [],
+            scoping = {};
 
-        // Declare the root from which dependencies are provided and check keys
-        $$injectorRoot = $$injectorRoot || global.app || {};
-
-        if (!Object.keys($$injectorRoot).length) {
-            throw new $Exceptions.$$ProviderDomainError();
+        if (FIRST_ARGUMENT_IS_ARRAY && typeof arguments[ 1 ] === 'object') {
+            scoping = arguments[ 1 ];
+        } else if (typeof LAST_ARGUMENT === 'object') {
+            scoping = LAST_ARGUMENT;
         }
 
-        let registrar,
-            providers = [],
-            args = arguments[0] instanceof Array ?
-                arguments[0] : Array.prototype.slice.call(arguments),
-            type = arguments[0] instanceof Array && arguments[1] ?
-                arguments[1] : null;
-
-        // Check to see if a registrar exists
-        if (typeof $$injectorRoot.$$registry === 'object') {
-            registrar = $$injectorRoot.$$registry;
+        if (Object.keys(scoping).length && !FIRST_ARGUMENT_IS_ARRAY) {
+            ARGS.pop();
         }
 
-        args.forEach(function(arg) {
+        for (let arg of ARGS) {
             let provider;
+
+            if (typeof arg !== 'string') {
+                continue;
+            }
 
             // Doing this for safety reasons...if the arg didn't come from IB,
             // it potentially has unsafe spaces and underscores
             arg = arg.toString().replace(/^(_){0,2}|(_){0,2}$|\s/g, '').trim();
-
-            // Rename convention for the $scope service
-            if (arg === 'scope') {
-                arg = '$scope';
-            } else if (
-                registrar && registrar[ arg ] === 'Model' &&
-                type && type === 'directive'
+            if (
+                REGISTRAR && REGISTRAR[ arg ] === 'Models' &&
+                scoping.type && scoping.type === 'directive'
             ) {
                 throw new $Exceptions.$$ProviderTypeError();
             }
 
             // Try to find the provider in the registrar or the declared object
-            // else return;
             try {
-                provider = registrar ?
-                    $$injectorRoot[ registrar[ arg ] ][ arg ] :
-                    $$injectorRoot[ arg ];
-                if (provider) {
-                    providers.push(provider);
-                    return;
-                }
-                throw new Error();
-            }
-            catch(e) {
+                provider = app[ REGISTRAR[ arg ] ][ arg ];
+            } catch (e) {
 
-                // If no provider could be found, there is a big problem
+                // These are session controlled and we need to make sure
+                // we pull out the right one
+                if (typeof scoping.type === 'string') {
+                    const TYPE = scoping.type.toLowerCase();
+                    if (arg === '$scope' && [
+                        'controller', 'directive', 'view', 'component'
+                    ].indexOf(TYPE) > -1) {
+                        provider = scoping[ arg ].val;
+                    } else if (
+                        [ '$request', '$response' ].indexOf(arg) > -1 &&
+                        TYPE === 'controller'
+                    ) {
+                        provider = scoping[ arg ].val;
+                    }
+                }
+            }
+
+            if (provider) {
+                providers.push(provider);
+            } else {
                 throw new $Exceptions.$$ProviderNotFoundError(arg);
             }
-        });
-        return providers.length > 1 ? providers : providers[0] ? providers[0] : [];
-    }
+        }
 
-    /**
-     * @desc Specifies the root object from which dependencies are fetched
-     * @param {object} r [param={}] The object from which dependencies are
-     * fetched
-     * @returns {object} The root object vaule
-     * @since 0.0.1
-     * @access public
-     * @example $Injector.$specifyInjectorRoot({});
-     */
-    static $specifyInjectorRoot(r = {}) {
-        $$injectorRoot = r;
-        return r;
+        if (providers.length) {
+            if (providers.length > 1) {
+                return providers;
+            }
+
+            return providers[ 0 ];
+        }
+
+        return providers;
     }
 }
 
+/* eslint-disable no-nested-ternary */
 /**
  * @desc Responsible for binding of dependencies to functions
  * @param {function} fn The function to which values are being provided
@@ -110,13 +113,16 @@ class $Injector {
  * @since 0.0.1
  * @access public
  */
-function $injectionBinder(fn, type) {
-    const args = $$arguments(fn),
-        providers = $Injector.get.apply(global.app, [ args, type ]);
-    return providers instanceof Array ? fn.bind(null, ...providers) : providers ?
-        fn.bind(null, providers) : fn.bind(null);
-}
+function $injectionBinder(fn, scoping) {
+    const ARGS = $$arguments(fn);
+    const PROVIDERS = $Injector.get(ARGS, scoping);
 
+    if (PROVIDERS instanceof Array) {
+        return fn.bind(null, ...PROVIDERS);
+    }
+
+    return fn.bind(null, PROVIDERS);
+}
 
 /**
  * @desc Parses dependencies out of a function using
@@ -141,11 +147,11 @@ function $$arguments(fn = () => false) {
             // Replace all of the "function" characters
             let argStr = args.map(
                 v => v.replace(/(function.*)\(|[\s\=\>\)\(]/g, '')
-            )[0];
+            )[ 0 ];
 
             // Split our argument string and pass it back to the injector
             if (argStr.length) {
-                return argStr.split(',').map((v) => v.trim());
+                return argStr.split(',').map(v => v.trim());
             }
         }
     }
